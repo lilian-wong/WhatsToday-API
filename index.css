@@ -1,0 +1,138 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    margin: 0;
+    line-height: 1.5;
+}
+.hidden{
+    display: none;
+}
+
+header h1{
+    font-size:16px;
+    padding-top:10px;
+    padding-bottom:0px;
+}
+.navBar{
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    height: 70px;
+    width: 100%;
+}
+
+#burger li{
+    display: block;
+    margin-top: 0px;   
+    text-align: left;
+}
+
+#burger-menu{
+    padding: 10px;
+    margin-top: 5px;
+    font-size: 30px;
+    text-align: right;
+}
+#burger{
+    background-color: lightgoldenrodyellow;
+}
+
+.applogo{
+    margin: 10px;
+    height: 60px;
+}
+
+
+section{
+    text-align: left;
+    margin: 0px;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+
+#weatherInfo{
+    display: none;
+}
+
+/* calender setting*/
+ul,li {
+    list-style-type: none;
+    padding: 0;
+}
+.month {
+    padding: 5px 5px;
+    width: 100%;
+    background:red;
+    text-align: center;
+}
+  
+.month ul li {
+    color: white;
+    font-size: 30px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.weekdays {
+    font-size: 30px;
+    margin: 0;
+    padding: 10px 0;
+    background-color:green;
+}
+
+.weekdays li {
+    display: inline-block;
+    width: 13.6%;
+    color: white;
+    text-align: center;
+}
+
+.days {
+    padding: 10px 0;
+    background: #eee;
+    margin: 0;
+}
+
+.days li {
+    display: inline-block;
+    width: 13.6%;
+    text-align: center;
+    margin-bottom: 5px;
+    font-size:30px;
+    color:black;
+}
+
+.days li .today {
+    padding: 5px;
+    background: blue;
+    color: white !important
+}
+
+/*------------------------*/
+/* Medium screens */
+@media all and (min-width:600px){
+
+    header h1{
+        font-size:32px;
+    }
+     .topBar{ 
+        justify-content: center;
+    }
+    h1{
+        padding-left: 20px;
+    }
+    #burger-menu{ 
+        display: none; 
+    }
+
+    main{
+        flex-flow: nowrap;
+    }
+    #weatherInfo{
+        display: block;
+    } 
+}
