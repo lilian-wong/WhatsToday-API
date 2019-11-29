@@ -27,7 +27,6 @@ const weekDayText =['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Satu
 
 // holiday 
 
-
 function getIPInfo(){
     fetch (ip_loc)
         .then (response => {
@@ -253,6 +252,27 @@ function toggleMenu(){
     })
 }
 
+$('.dailyQuote-link').on('click',function(){
+    let link = document.getElementById('quote');
+    link.scrollIntoView();
+});
+
+$('.dailyAdvice-link').on('click',function(){
+    let link = document.getElementById('advice');
+    link.scrollIntoView();
+});
+
+$('.weatherInfo-link').on('click',function(){
+    let link = document.getElementById('weatherInfo');
+    link.scrollIntoView();
+});
+
+function scrollTop(){
+    $('#topbtn').on('click', function(){
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;    
+    });
+}
 // load all functions
 function loadForms(){
     toggleMenu();
@@ -263,6 +283,7 @@ function loadForms(){
     getQuote();
     getHoliday();
     setCalender();
+    scrollTop();
 }
 
 $(loadForms);

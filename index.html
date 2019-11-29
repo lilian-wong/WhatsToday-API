@@ -20,12 +20,12 @@
     </div>
     <div>
     <main>
-        <div id ="left-side" >
+        <div id ="left-side" class="hidden">
             <div class="top-menu">
-                <ol id="burger" class="hidden">
-                    <li id="weather" class="menu-item">Today's weather</li>
-                    <li id="dailyQuote" class="menu-item">Daily Quote</li>
-                    <li id="dailyAdvice" class="menu-item">Daily Advice</li>
+                <ol id="burger" >
+                    <li id="weather" class="weatherInfo-link">Today's weather</li>
+                    <li id="dailyQuote" class="dailyQuote-link">Daily Quote</li>
+                    <li id="dailyAdvice" class="dailyAdvice-link">Daily Advice</li>
                 </ol> 
             </div>
         </div>
@@ -39,7 +39,7 @@
             <section id="advice"></section>
         </div>
     </main>
-
+    <a id="topbtn">&#10506;</a>
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"></script>
     <script src="index.js"></script>

@@ -11,6 +11,10 @@ body{
     display: none;
 }
 
+.burger li:hover{
+    font-weight: bold;  
+}
+
 header h1{
     font-size:16px;
     padding-top:10px;
@@ -51,11 +55,6 @@ section{
     margin: 0px;
     padding-left: 2%;
     padding-right: 2%;
-}
-
-
-#weatherInfo{
-    display: none;
 }
 
 /* calender setting*/
