@@ -7,6 +7,8 @@ const quoteURL = 'https://quote-garden.herokuapp.com/quotes/random'; //Random Qu
 const calendarificURL = 'https://calendarific.com/api/v2/holidays'; //Calendarific Global Holidays
 const ip_loc = 'http://ip-api.com/json/'; //ip address
 const weatherURL = 'http://api.openweathermap.org/data/2.5/weather'; //weather info
+const calendarific_api_key = 'a72beece340b8b1fdc911880a439f871777eb604';
+const openWeather_api_key = 'cac41a545f1a6a3eadf04d709f83ea14';
 
 let countryCode ='US'; //string- required field : Default set as 'US'
 let countryCode2 ='USA'; //string- required field : Default set as 'US'
@@ -23,11 +25,16 @@ const thisDate = todayDate.getDate();
 const thisWeekDay = todayDate.getDay();
 const monthText = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
 const weekDayShortText = ['Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat'];//Calander
-const weekDayText =['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday', 'Sunday'];
+const weekDayText =['Sunday','Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday'];
+const christmasDay = 25;
+const christmasMonth = 12;
+const newYearDay = 1;
+const newYearMonth = 1;
 
 // holiday 
 
-function getIPInfo(){
+function getWeatherInfo(){
+$('.weatherInfo-link').click(function(){
     fetch (ip_loc)
         .then (response => {
                 if(response.ok){
@@ -36,12 +43,14 @@ function getIPInfo(){
                 throw new Error(response.message);
             }
         )
-        .then (responseJson => setIPInfo(responseJson))
+       .then (responseJson => getWeather(responseJson.zip, countryCode))
+
+});
 }
 
 // Generate parameter for weather API
 function generateWeatherParam(zip, countryCode){
-    return weatherURL+'?id='+zip+'&q='+countryCode+'&APPID='+openWeather_api_key;
+    return weatherURL+'?zip='+zip+','+countryCode+'&APPID='+openWeather_api_key;
 }
 
 // Generate parameter for calendarific API
@@ -91,10 +100,10 @@ function setCalender(){
         }
     }
 
-    $('#count-down').append(`
+    $('#holidays').html(`
     <div class="month"> 
         <ul>
-            <li>${monthText[thisMonth-1]}<br>
+            <li>${monthText[thisMonth-1]} 
                 <span>${thisYear}</span>
             </li>
         </ul>
@@ -129,10 +138,6 @@ function getWeather(zip, country){
     fetch (url)
         .then(response => response.json())
         .then(responseJson => displayWeather(responseJson))
-}
-
-function setIPInfo(ipInfo){   
-    getWeather(ipInfo.zip, countryCode2);
 }
 
 function searchHolidays(holidays){
@@ -208,8 +213,8 @@ function setToday(){
     today = thisYear+'-'+thisMonth+'-'+thisDate;
     today = todayDate.toLocaleString('fr-CA', {year: 'numeric', month:'2-digit', day:'2-digit'})
     $('#dateInfo').append(`
-    <p>Today is ${weekDayText[thisWeekDay-1]}, ${today}</p>
-    <p>Current time is ${todayDate.toLocaleTimeString('en-US')}<p>`);
+    <span>Today is ${weekDayText[thisWeekDay]}, ${today}</span>
+    <span>Current time is ${todayDate.toLocaleTimeString('en-US')}<span>`);
 }
 
 function displayQuote(responseJson){
@@ -231,14 +236,16 @@ function displayAdvice(responseJson){
 
 function displayHolidays(holiday){
     $('#holidays').append(`
-    <p2>It's ${holiday}</p2>
+    <p2>${holiday}</p2>
     
     `)
 }
 
-function displayWeather(weather){
+function displayWeather(weather){ 
+    $('#weatherInfo').empty();
+    $('#weatherInfo').dialog();
     $('#weatherInfo').append(`
-    <h2>Today's Weather:</h2>
+    <h2>Today's Weather ${weather['name']}:</h2>
     <p>Temp: ${(weather['main'].temp - 273.15).toFixed(2)}°C Humidity:${weather['main'].humidity} </p>
     <p>Weather: ${weather['weather'][0].main} ${weather['weather'][0].description}</p>
     <span><img src="http://openweathermap.org/img/wn/${weather['weather'][0].icon}@2x.png"><span>
@@ -273,17 +280,20 @@ function scrollTop(){
         document.documentElement.scrollTop = 0;    
     });
 }
+
+
 // load all functions
 function loadForms(){
     toggleMenu();
     displayGreetings();
-    getIPInfo();
+    getWeatherInfo();
     setToday()
     getAdvice();
     getQuote();
     getHoliday();
     setCalender();
     scrollTop();
+
 }
 
 $(loadForms);
