@@ -11,11 +11,7 @@ const calendarific_api_key = 'a72beece340b8b1fdc911880a439f871777eb604';
 const openWeather_api_key = 'cac41a545f1a6a3eadf04d709f83ea14';
 
 let countryCode ='US'; //string- required field : Default set as 'US'
-let countryCode2 ='USA'; //string- required field : Default set as 'US'
-let publicHolidays = [];
-let IP_Info = [];
 let today ='';
-
 
 // Set today Information
 const todayDate = new Date();
@@ -44,7 +40,6 @@ $('.weatherInfo-link').click(function(){
             }
         )
        .then (responseJson => getWeather(responseJson.zip, countryCode))
-
 });
 }
 
@@ -58,18 +53,19 @@ function generateCalenderParam(calendarific_api_key,countryCode,thisYear){
     return `${calendarificURL}?api_key=${calendarific_api_key}&country=${countryCode}&year=${thisYear}`;
 }
 
-//search today's date from the holiday 
-
 //function getHoliday(date, month, year, holidays){
-function getHoliday(){
-        let url = generateCalenderParam(calendarific_api_key,countryCode,thisYear);
-        fetch(url)
-            .then(response =>{
-                if(response.ok){
-                    return response.json();
-                }
-            })
-            .then(responseJson => searchHolidays(responseJson.response.holidays))
+function getHoliday(searchedYear){
+    let url = generateCalenderParam(calendarific_api_key,countryCode,searchedYear);
+    fetch(url)
+        .then(response =>{
+            if(response.ok){
+                return response.json();
+            }
+        })
+        .then(responseJson => {
+            searchTodayHoliday(responseJson.response.holidays, 'Observance')
+            searchByYearType(responseJson.response.holidays)
+        })
 }
 
 function setCalender(){
@@ -93,10 +89,10 @@ function setCalender(){
     //set days of the month 
     for(let j = 1;j<lastDate+1; j++){
         if(thisDate===j){
-            dayHTML = dayHTML + `<li><span class="today">${j}</span></li>`;
+            dayHTML = dayHTML + `<li value="${j}"><span class="today">${j}</span></li>`;
         }
         else{
-            dayHTML = dayHTML + '<li>'+ j + '</li>';
+            dayHTML = dayHTML + `<li value="${j}">${j}</li>`;
         }
     }
 
@@ -128,7 +124,9 @@ function getAdvice(){
 function getQuote(){
     let loc = '#dailyQuote';
     fetch(quoteURL)
-        .then(response => response.json())
+        .then(response => 
+            response.json()
+        )
         .then(responseJson => displayQuote(responseJson))
 }
 
@@ -140,16 +138,57 @@ function getWeather(zip, country){
         .then(responseJson => displayWeather(responseJson))
 }
 
-function searchHolidays(holidays){
-    let holidaysFound =  '';
-    let nextHolidays = [];
-    for (let i = 0; i< holidays.length; i++){
-        if (holidays[i]['date']['iso'] === today &&holidays[i]['type']+''==='Observance'){
-            holidaysFound = holidays[i]['name'];
-        }
+function setHolidayType(holidays){
+    let typeHoliday = [];
+    let uniqueTypeHoliday = [];
+    for(let i = 0; i<holidays.length; i++){
+        typeHoliday.push(holidays[i]['type']);
     }
 
-    displayHolidays(holidaysFound);
+    //Remove Duplicates
+    typeHoliday.sort();
+    uniqueTypeHoliday.push(String(typeHoliday[0]));
+    for(let j=0; j<typeHoliday.length-1; j++){
+        if(String(typeHoliday[j])!=String(typeHoliday[j+1])){
+            uniqueTypeHoliday.push(String(typeHoliday[j]));
+        }
+    }    
+    return(uniqueTypeHoliday);
+}
+
+function searchByYearType(holidays){
+    displayHolidaysType(setHolidayType(holidays));
+    $('#holidaySearchForm').submit(function(event){
+        event.preventDefault();         
+        let monthlyHolidayHTML = '';
+        for (let i = 0; i< holidays.length; i++){
+
+            let holidayDate= holidays[i]['date']['iso'];
+            let holidayName = holidays[i]['name'];
+            // if (String(holidays[i]['date']['datetime'].year) === $('#yearEnter').val() && String(holidays[i]['type'])===$('#holidayType').val()){
+                if (String(holidays[i]['date']['datetime'].year) === $('#yearEnter').val() &&
+                String(holidays[i]['date']['datetime'].month) === $('#holidayMonth').val() && 
+                String(holidays[i]['type'])===$('#holidayType').val()){
+                monthlyHolidayHTML = monthlyHolidayHTML + `<p>${holidayDate} - ${holidayName}</p>`;
+            }
+        }   
+
+        displayHolidays('#monthlyHoliday', monthlyHolidayHTML);   
+    })
+}
+
+// Check today's date and type of holiday from the response json file. If the date and type match, display the name of holiday, else display non holiday message 
+function searchTodayHoliday(holidays, type){
+    let holidaysFound =  '';
+    for (let i = 0; i< holidays.length; i++){
+        if (holidays[i]['date']['iso']===today && holidays[i]['type']+''===type){
+            holidaysFound = holidays[i]['name'];
+        }
+        else{
+            holidaysFound ='Today is not a holiday';
+        }
+    }   
+    displayHolidays('#todayHoliday', `<p2>${holidaysFound}</p>`);
 }
 
 //“Good morning”  5:00 a.m. to 12:00 p.m. 
@@ -179,10 +218,10 @@ function checkTime(){
         }
         return 'Good evening!';
     }else if(currentHour >20){
-        return 'Good night!';
+        return 'Good Night!';
     }
     else{
-        return 'Good night!';
+        return 'Good Night!';
     }
 }
 
@@ -215,6 +254,17 @@ function setToday(){
     $('#dateInfo').append(`
     <span>Today is ${weekDayText[thisWeekDay]}, ${today}</span>
     <span>Current time is ${todayDate.toLocaleTimeString('en-US')}<span>`);
+    
+}
+
+function displayHolidaysType(holidayType){
+    //set holiday input type 
+    $('#holidayType').append(`<option default>Please select holiday type</option>`);
+    for (let i = 0; i<holidayType.length; i++){
+        $('#holidayType').append(`
+            <option value="${holidayType[i]}">${holidayType[i]}</option>
+        `)
+    }
 }
 
 function displayQuote(responseJson){
@@ -234,13 +284,10 @@ function displayAdvice(responseJson){
     )
 }
 
-function displayHolidays(holiday){
-    $('#holidays').append(`
-    <p2>${holiday}</p2>
-    
-    `)
+function displayHolidays(loc, holiday){
+    $(loc).empty();
+    $(loc).append(holiday);
 }
-
 function displayWeather(weather){ 
     $('#weatherInfo').empty();
     $('#weatherInfo').dialog();
@@ -255,6 +302,9 @@ function displayWeather(weather){
 //Toggle burger menu button
 function toggleMenu(){
     $('#burger-menu').on('click',function(){
+        $('#left-side').toggleClass('hidden');
+    })
+    $('#closeBurger').on('click',function(){
         $('#left-side').toggleClass('hidden');
     })
 }
@@ -287,13 +337,12 @@ function loadForms(){
     toggleMenu();
     displayGreetings();
     getWeatherInfo();
-    setToday()
+    getHoliday(thisYear);
+    setToday();
     getAdvice();
     getQuote();
-    getHoliday();
     setCalender();
     scrollTop();
-
 }
 
 $(loadForms);

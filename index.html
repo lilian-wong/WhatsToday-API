@@ -1,4 +1,4 @@
-<!--This app use Typeform API for creating invitation forms-->
+<!--This app utilize API from calendarific, openWeather, adviceslip, quote-garden.herokuapp to get information about today-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,21 +22,52 @@
     <div>
     <main>
         <div id ="left-side" class="hidden">
-            <div class="top-menu">
+            <div class="burger-menu">
                 <ol id="burger" >
+                    <li id="closeBurger">X</li>
                     <li id="weather" class="weatherInfo-link">Today's weather</li>
-                    <li id="dailyQuote" class="dailyQuote-link">Daily Quote</li>
-                    <li id="dailyAdvice" class="dailyAdvice-link">Daily Advice</li>
+                    <li id="dailyQuote" class="dailyQuote-link">Get a Quote</li>
+                    <li id="dailyAdvice" class="dailyAdvice-link">Advice for today</li>
                 </ol> 
             </div>
         </div>
         <div class = "main">
+            <!-- <ul id="navMenu">
+                    <li>Today's weather</li>
+                    <li>Get a Quote</li>
+                    <li>Advice for today</li>
+            </ul> -->
             <section id="greetings"></section>
-            <section id="userInput">
-                <button type="button" class="weatherInfo-link">Check today's weather</button>
             <section id="dateInfo"></section>
-            <section id="holidays"> </section>
-            <section id="count-down"></section>
+            <button type="button" class="weatherInfo-link">Check today's weather</button>
+            <section id="holidays"></section>
+            <section id="todayHoliday"></section>
+            <section id="userInput">
+                <h2>Find list of holidays:</h2>
+                    <p>Select month and holiday type:</p>
+                <form id="holidaySearchForm">
+                    <input type = "number" id="yearEnter" class "yearInput" value = "2019"  maxlength= "4" min="1900" max="2049" required>
+                    <select id = "holidayMonth" required>
+                        <option default>Please select month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select> 
+                    <select id ="holidayType" required>
+                    </select>  
+                    <input type="submit" value="Find holidays">
+                </form>
+            </section>
+            <section id="monthlyHoliday"></section>
             <section id="weatherInfo"></section>
             <section id="quote"></section>
             <section id="advice"></section>
