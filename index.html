@@ -7,17 +7,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta description= "What is today?"s">
         <meta http-equiv="X-UA-Compatible" content="id-edge">
-        <title>What is today?</title>
         <link rel="shortcut icon" href="./images/AppLogo.png">
+        <title>What is today?</title>
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="index.css">
+        <link href="https://fonts.googleapis.com/css?family=Walter+Turncoat&display=swap" rel="stylesheet">
     </head>
 <body>
     <div class="navBar">
         <div id="burger-menu">&#9776;</div> 
-        <header><h1>What is today?</h1></header>
-
         <img src="./images/AppLogo.png" class="applogo" alt="app logo">
+        <header><h1>What is today?</h1></header>
     </div>
     <div>
     <main>
@@ -44,7 +44,7 @@
             <section id="todayHoliday"></section>
             <section id="userInput">
                 <h2>Find list of holidays:</h2>
-                    <p>Select month and holiday type:</p>
+                    <p>Select month and year:</p>
                 <form id="holidaySearchForm">
                     <input type = "number" id="yearEnter" class "yearInput" value = "2019"  maxlength= "4" min="1900" max="2049" required>
                     <select id = "holidayMonth" required>
@@ -62,15 +62,15 @@
                         <option value="11">November</option>
                         <option value="12">December</option>
                     </select> 
-                    <select id ="holidayType" required>
-                    </select>  
+                    <!-- <select id ="holidayType" class="hidden" required>
+                    </select>  -->
                     <input type="submit" value="Find holidays">
                 </form>
             </section>
             <section id="monthlyHoliday"></section>
             <section id="weatherInfo"></section>
-            <section id="quote"></section>
-            <section id="advice"></section>
+            <section id="quote" class="smallerText"></section>
+            <section id="advice" class="smallerText"></section>
         </div>
     </main>
     <a id="topbtn">&#10506;</a>

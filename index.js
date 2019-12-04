@@ -49,13 +49,12 @@ function generateWeatherParam(zip, countryCode){
 }
 
 // Generate parameter for calendarific API
-function generateCalenderParam(calendarific_api_key,countryCode,thisYear){
-    return `${calendarificURL}?api_key=${calendarific_api_key}&country=${countryCode}&year=${thisYear}`;
+function generateCalenderParam(calendarific_api_key,countryCode,year,month){
+    return `${calendarificURL}?api_key=${calendarific_api_key}&country=${countryCode}&year=${year}&month=${month}`;
 }
 
-//function getHoliday(date, month, year, holidays){
-function getHoliday(searchedYear){
-    let url = generateCalenderParam(calendarific_api_key,countryCode,searchedYear);
+function getTodayHoliday(){
+    let url = generateCalenderParam(calendarific_api_key,countryCode,thisYear, thisMonth);
     fetch(url)
         .then(response =>{
             if(response.ok){
@@ -64,9 +63,26 @@ function getHoliday(searchedYear){
         })
         .then(responseJson => {
             searchTodayHoliday(responseJson.response.holidays, 'Observance')
-            searchByYearType(responseJson.response.holidays)
+            //searchByYearType(responseJson.response.holidays)
         })
 }
+
+function getHolidayByYear(){
+$('#holidaySearchForm').submit(function(event){
+    event.preventDefault(); 
+    let url = generateCalenderParam(calendarific_api_key,countryCode,$('#yearEnter').val(), $('#holidayMonth').val());
+    fetch(url)
+        .then(response =>{
+            if(response.ok){
+                return response.json();
+            }
+        })
+        .then(responseJson => {
+            searchHolidayByYear(responseJson.response.holidays)
+        })
+    })
+}
+
 
 function setCalender(){
     let lastDay = new Date(thisYear, thisMonth, 0);
@@ -156,25 +172,18 @@ function setHolidayType(holidays){
     return(uniqueTypeHoliday);
 }
 
-function searchByYearType(holidays){
-    displayHolidaysType(setHolidayType(holidays));
-    $('#holidaySearchForm').submit(function(event){
-        event.preventDefault();         
-        let monthlyHolidayHTML = '';
-        for (let i = 0; i< holidays.length; i++){
-
-            let holidayDate= holidays[i]['date']['iso'];
-            let holidayName = holidays[i]['name'];
-            // if (String(holidays[i]['date']['datetime'].year) === $('#yearEnter').val() && String(holidays[i]['type'])===$('#holidayType').val()){
-                if (String(holidays[i]['date']['datetime'].year) === $('#yearEnter').val() &&
-                String(holidays[i]['date']['datetime'].month) === $('#holidayMonth').val() && 
-                String(holidays[i]['type'])===$('#holidayType').val()){
-                monthlyHolidayHTML = monthlyHolidayHTML + `<p>${holidayDate} - ${holidayName}</p>`;
-            }
-        }   
-
-        displayHolidays('#monthlyHoliday', monthlyHolidayHTML);   
-    })
+function searchHolidayByYear(holidays){
+    console.log(holidays);
+    let monthlyHolidayHTML = '';
+    for (let i = 0; i< holidays.length; i++){
+        let holidayDate= holidays[i]['date']['iso'];
+        let holidayName = holidays[i]['name'];
+        if (String(holidays[i]['date']['datetime'].year) === $('#yearEnter').val() &&
+        String(holidays[i]['date']['datetime'].month) === $('#holidayMonth').val()){
+        monthlyHolidayHTML = monthlyHolidayHTML + `<p>${holidayDate} - ${holidayName}</p>`;
+        }
+    }   
+    displayHolidays('#monthlyHoliday', monthlyHolidayHTML);   
 }
 
 // Check today's date and type of holiday from the response json file. If the date and type match, display the name of holiday, else display non holiday message 
@@ -226,7 +235,6 @@ function checkTime(){
 }
 
 // All HTML Display functions
-
 function displayGreetings(){
     let greeting = checkTime();
     let icon = '';
@@ -249,6 +257,7 @@ function displayGreetings(){
 }
 
 function setToday(){
+    getTodayHoliday();
     today = thisYear+'-'+thisMonth+'-'+thisDate;
     today = todayDate.toLocaleString('fr-CA', {year: 'numeric', month:'2-digit', day:'2-digit'})
     $('#dateInfo').append(`
@@ -270,7 +279,6 @@ function displayHolidaysType(holidayType){
 function displayQuote(responseJson){
     $('#quote').empty();
     $('#quote').append(`
-    <h2>Quote:</h2>
     <p>"${responseJson.quoteText}"</p>
     <p>-${responseJson.quoteAuthor}</p>`
     )
@@ -337,8 +345,8 @@ function loadForms(){
     toggleMenu();
     displayGreetings();
     getWeatherInfo();
-    getHoliday(thisYear);
     setToday();
+    getHolidayByYear();
     getAdvice();
     getQuote();
     setCalender();
