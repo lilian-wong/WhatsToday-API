@@ -101,13 +101,23 @@ section{
 .smallerText{
     font-style: italic;
 }
+
 /* calender setting*/
 ul,li {
     list-style-type: none;
     padding: 0;
 }
+#holidays{
+    border: black 1em solid;
+    border-radius: 6em;
+    padding-top: 0em;
+    padding-left: 0em;
+    padding-right: 0em;
+}
 .month {
     padding: 5px 5px;
+    border-top-left-radius: 6em;
+    border-top-right-radius: 6em;
     width: 100%;
     background: darkcyan;
     text-align: center;
@@ -125,6 +135,8 @@ ul,li {
     margin: 0;
     padding: 0;
     background-color: darkorange;
+    border-bottom-left-radius: 4em;
+    border-bottom-right-radius: 4em;
 }
 
 .weekdays li {
@@ -138,6 +150,10 @@ ul,li {
     padding: 10px 0;
     background: #eee;
     margin: 0;
+    padding-bottom: 5em;
+    border-bottom-left-radius: 4em;
+    border-bottom-right-radius: 4em;
+
 }
 
 .days li {
@@ -147,6 +163,7 @@ ul,li {
     margin-bottom: 5px;
     font-size:30px;
     color:black;
+    
 }
 
 .days li .today {

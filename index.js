@@ -28,7 +28,6 @@ const newYearDay = 1;
 const newYearMonth = 1;
 
 // holiday 
-
 function getWeatherInfo(){
 $('.weatherInfo-link').click(function(){
     fetch (ip_loc)
@@ -60,14 +59,14 @@ function getTodayHoliday(){
             if(response.ok){
                 return response.json();
             }
+            throw new Error(response.message);
         })
         .then(responseJson => {
             searchTodayHoliday(responseJson.response.holidays, 'Observance')
-            //searchByYearType(responseJson.response.holidays)
         })
 }
 
-function getHolidayByYear(){
+function getHolidayByYearMonth(){
 $('#holidaySearchForm').submit(function(event){
     event.preventDefault(); 
     let url = generateCalenderParam(calendarific_api_key,countryCode,$('#yearEnter').val(), $('#holidayMonth').val());
@@ -83,7 +82,7 @@ $('#holidaySearchForm').submit(function(event){
     })
 }
 
-
+//Generate HTML code for Calender
 function setCalender(){
     let lastDay = new Date(thisYear, thisMonth, 0);
     let lastDate = lastDay.getDate()+1;
@@ -98,20 +97,20 @@ function setCalender(){
     }
 
     //set spacing for weekdays
-    for(let k=0; k<firstWeekDay;k++){
+    for(let k=1; k<firstWeekDay;k++){
         dayHTML = dayHTML + '<li>'+ ' ' + '</li>';
     }
 
     //set days of the month 
-    for(let j = 1;j<lastDate+1; j++){
+    for(let j = 1;j<lastDate; j++){
         if(thisDate===j){
             dayHTML = dayHTML + `<li value="${j}"><span class="today">${j}</span></li>`;
         }
         else{
             dayHTML = dayHTML + `<li value="${j}">${j}</li>`;
         }
+       
     }
-
     $('#holidays').html(`
     <div class="month"> 
         <ul>
@@ -173,7 +172,6 @@ function setHolidayType(holidays){
 }
 
 function searchHolidayByYear(holidays){
-    console.log(holidays);
     let monthlyHolidayHTML = '';
     for (let i = 0; i< holidays.length; i++){
         let holidayDate= holidays[i]['date']['iso'];
@@ -315,12 +313,11 @@ function displayWeather(weather){
     $('#weatherInfo').append(`
     <h2>Today's Weather ${weather['name']}:</h2>
     <p>Temp: ${getCelsius(temp)}°C/ ${getFahrenheit(temp)}°F Humidity:${weather['main'].humidity} </p>
-
     <p>Weather: ${weather['weather'][0].main} ${weather['weather'][0].description}</p>
-    <span><img src="http://openweathermap.org/img/wn/${weather['weather'][0].icon}@2x.png"><span>
+    <span><img src="https://openweathermap.org/img/wn/${weather['weather'][0].icon}@2x.png"><span>
     `)
 }
-// <p>Temp: ${(weather['main'].temp - 273.15).toFixed(2)}°C Humidity:${weather['main'].humidity} </p>
+
 //Toggle burger menu button
 function toggleMenu(){
     $('#burger-menu').on('click',function(){
@@ -360,7 +357,7 @@ function loadForms(){
     displayGreetings();
     getWeatherInfo();
     setToday();
-    getHolidayByYear();
+    getHolidayByYearMonth();
     getAdvice();
     getQuote();
     setCalender();
