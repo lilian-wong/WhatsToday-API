@@ -3,7 +3,7 @@
 }
 
 body{
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Walter Turncoat', cursive;
     text-align: center;
     margin: 0;
     line-height: 1.5;
@@ -22,8 +22,13 @@ body{
     display: none;
 }
 
-.burger li:hover{
+#menu-item li:hover{
     font-weight: bold;  
+}
+#menu-item li:first-child{
+    color: blueviolet;
+    background-color: white;
+    text-align: right;
 }
 
 #navMenu{
@@ -34,7 +39,6 @@ body{
     padding: 5px;
     display: inline;
 }
-
 
 header h1{
     font-family: 'Walter Turncoat', cursive;
@@ -52,7 +56,7 @@ header h1{
 }
 
 
-#burger li{
+#menu-item li{
     display: block;
     margin-top: 0px;   
     text-align: left;
@@ -64,7 +68,7 @@ header h1{
     font-size: 40px;
     text-align: right;
 }
-#burger{
+#menu-item{
     position: absolute;
     background-color: lightgoldenrodyellow;
     width: 200px;

@@ -296,17 +296,31 @@ function displayHolidays(loc, holiday){
     $(loc).empty();
     $(loc).append(holiday);
 }
+
+//convert Kevin to Fahrenheit
+function getFahrenheit(kevin){
+    let f = (kevin-273.15)*9/5+32;
+    return f.toFixed(2);
+}
+
+//convert Kevin to Celsius
+function getCelsius(kevin){
+    return (kevin-273.15).toFixed(2);
+}
+
 function displayWeather(weather){ 
+    let temp = weather['main'].temp;
     $('#weatherInfo').empty();
     $('#weatherInfo').dialog();
     $('#weatherInfo').append(`
     <h2>Today's Weather ${weather['name']}:</h2>
-    <p>Temp: ${(weather['main'].temp - 273.15).toFixed(2)}°C Humidity:${weather['main'].humidity} </p>
+    <p>Temp: ${getCelsius(temp)}°C/ ${getFahrenheit(temp)}°F Humidity:${weather['main'].humidity} </p>
+
     <p>Weather: ${weather['weather'][0].main} ${weather['weather'][0].description}</p>
     <span><img src="http://openweathermap.org/img/wn/${weather['weather'][0].icon}@2x.png"><span>
     `)
 }
-
+// <p>Temp: ${(weather['main'].temp - 273.15).toFixed(2)}°C Humidity:${weather['main'].humidity} </p>
 //Toggle burger menu button
 function toggleMenu(){
     $('#burger-menu').on('click',function(){
