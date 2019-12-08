@@ -52,7 +52,8 @@ function generateCalenderParam(calendarific_api_key,countryCode,year,month){
     return `${calendarificURL}?api_key=${calendarific_api_key}&country=${countryCode}&year=${year}&month=${month}`;
 }
 
-function getTodayHoliday(){
+// function getTodayHoliday(){
+function getCalender(){
     let url = generateCalenderParam(calendarific_api_key,countryCode,thisYear, thisMonth);
     fetch(url)
         .then(response =>{
@@ -61,8 +62,8 @@ function getTodayHoliday(){
             }
             throw new Error(response.message);
         })
-        .then(responseJson => {
-            searchTodayHoliday(responseJson.response.holidays, 'Observance')
+        .then(responseJson =>{
+            setCalender(responseJson.response.holidays)
         })
 }
 
@@ -83,17 +84,24 @@ $('#holidaySearchForm').submit(function(event){
 }
 
 //Generate HTML code for Calender
-function setCalender(){
+function setCalender(holidays){
+    let monthlyHoliday = setHoliday(holidays);
     let lastDay = new Date(thisYear, thisMonth, 0);
-    let lastDate = lastDay.getDate()+1;
+    let lastDate = lastDay.getDate();
     let firstWeekDay = new Date(thisYear, thisMonth, -1);
     firstWeekDay = firstWeekDay.getDay();
     let weekDayHTML ='';
     let dayHTML ='';
+    let allHoliday = '';
 
     //Generate weekdays text
     for(let i = 0;i<weekDayShortText.length; i++){
-        weekDayHTML = weekDayHTML + '<li>'+weekDayShortText[i] + '</li>';
+        if(i === 0 || i ===6){
+            weekDayHTML = weekDayHTML + `<li><span class="weekend">${weekDayShortText[i]}</span></li>`;
+        }
+        else{
+            weekDayHTML = weekDayHTML + '<li>'+weekDayShortText[i] + '</li>';
+        } 
     }
 
     //set spacing for weekdays
@@ -102,15 +110,29 @@ function setCalender(){
     }
 
     //set days of the month 
-    for(let j = 1;j<lastDate; j++){
+    for(let j = 1;j<=lastDate; j++){  
+        let searchDate = new Date(thisYear+'-'+thisMonth+'-'+j);   
+        let foundHoliday = isHoliday(monthlyHoliday,  searchDate);
         if(thisDate===j){
-            dayHTML = dayHTML + `<li value="${j}"><span class="today">${j}</span></li>`;
+            if(foundHoliday===''){
+                dayHTML = dayHTML + `<li value="${j}"><span class="today">${j}</span></li>`;
+            }
+            else{
+                dayHTML = dayHTML + `<li value="${j}"><span class="today-holiday">${j}</span></li>`;
+                allHoliday = allHoliday +(searchDate.getMonth()+1)+'/'+j+' '+ '-'+ foundHoliday+' ';
+            }
         }
         else{
-            dayHTML = dayHTML + `<li value="${j}">${j}</li>`;
+            if(foundHoliday===''){
+                dayHTML = dayHTML + `<li value="${j}">${j}</li>`;
+            }
+            else{
+                dayHTML = dayHTML + `<li value="${j}"><span class="holiday">${j}</span></li>`;
+                allHoliday = allHoliday +(searchDate.getMonth()+1)+'/'+ j+' '+'-'+ foundHoliday+' ';
+            }
         }
-       
     }
+
     $('#holidays').html(`
     <div class="month"> 
         <ul>
@@ -124,6 +146,7 @@ function setCalender(){
         ${weekDayHTML}
         <ul class="days">
         ${dayHTML}
+    <p class="allholidays">${allHoliday}</p>
     `)
 }
 
@@ -174,28 +197,41 @@ function setHolidayType(holidays){
 function searchHolidayByYear(holidays){
     let monthlyHolidayHTML = '';
     for (let i = 0; i< holidays.length; i++){
+
         let holidayDate= holidays[i]['date']['iso'];
         let holidayName = holidays[i]['name'];
+        let holidayType = holidays[i]['type'];
         if (String(holidays[i]['date']['datetime'].year) === $('#yearEnter').val() &&
         String(holidays[i]['date']['datetime'].month) === $('#holidayMonth').val()){
-        monthlyHolidayHTML = monthlyHolidayHTML + `<p>${holidayDate} - ${holidayName}</p>`;
+        monthlyHolidayHTML = monthlyHolidayHTML + `<p>${holidayDate} - ${holidayName} (${holidayType})</p>`;
         }
     }   
     displayHolidays('#monthlyHoliday', monthlyHolidayHTML);   
 }
 
 // Check today's date and type of holiday from the response json file. If the date and type match, display the name of holiday, else display non holiday message 
-function searchTodayHoliday(holidays, type){
-    let holidaysFound =  '';
+
+function setHoliday(holidays){
+    let holidaysFound = [];
     for (let i = 0; i< holidays.length; i++){
-        if (holidays[i]['date']['iso']===today && holidays[i]['type']+''===type){
-            holidaysFound = holidays[i]['name'];
-        }
-        else{
-            holidaysFound ='Today is not a holiday';
+        if (holidays[i]['type'][0]+''==='Observance' || holidays[i]['type'][0]+''==='National holiday'){
+            console.log(holidays[i]['date']['iso'], holidays[i]['type'],holidays[i]['name']);
+           holidaysFound.push({
+                date: holidays[i]['date']['iso'],
+                holidayName: holidays[i]['name']});
         }
     }   
-    displayHolidays('#todayHoliday', `<p2>${holidaysFound}</p>`);
+    return holidaysFound;
+}
+
+function isHoliday(holidays, day){
+    day = day.toLocaleString('fr-CA', {year: 'numeric', month:'2-digit', day:'2-digit'});
+    for(let i=0;i<holidays.length; i++){
+        if(holidays[i].date === day){
+            return(holidays[i].holidayName);
+        }
+    }
+    return '';
 }
 
 //“Good morning”  5:00 a.m. to 12:00 p.m. 
@@ -211,7 +247,10 @@ function checkTime(){
         if(currentHour === 12 && currentMin > 0){
             return 'Good afternoon!';
         }
-        return 'Good morning!';
+        else{
+            return 'Good morning!';
+        }
+        
     }
     else if(currentHour > 12 && currentHour <= 17){
         if(currentHour == 17 && currentMin > 0){
@@ -249,19 +288,17 @@ function displayGreetings(){
         icon = 'smiley.png';
     }
     $('#greetings').append(`
-    <span><img src="./images/${icon}" alt="greeting icon" style="width:50px"></span>
-    <span>${checkTime()}</span>
+    <div><img src="./images/${icon}" alt="greeting icon" style="width:50px"></div>
+    <div>${checkTime()}</div>
     `);
 }
 
 function setToday(){
-    getTodayHoliday();
     today = thisYear+'-'+thisMonth+'-'+thisDate;
-    today = todayDate.toLocaleString('fr-CA', {year: 'numeric', month:'2-digit', day:'2-digit'})
+    today = todayDate.toLocaleString('fr-CA', {year: 'numeric', month:'2-digit', day:'2-digit'});
     $('#dateInfo').append(`
-    <span>Today is ${weekDayText[thisWeekDay]}, ${today}</span>
-    <span>Current time is ${todayDate.toLocaleTimeString('en-US')}<span>`);
-    
+    <h2>It's ${weekDayText[thisWeekDay]}</h2>
+    <p>${today}</p>`);   
 }
 
 function displayHolidaysType(holidayType){
@@ -276,9 +313,14 @@ function displayHolidaysType(holidayType){
 
 function displayQuote(responseJson){
     $('#quote').empty();
+    let author = responseJson.quoteAuthor;
+    if(author===''){
+        author = 'unknown';
+    }
+
     $('#quote').append(`
     <p>"${responseJson.quoteText}"</p>
-    <p>-${responseJson.quoteAuthor}</p>`
+    <p>-${author}</p>`
     )
 }
 
@@ -360,8 +402,8 @@ function loadForms(){
     getHolidayByYearMonth();
     getAdvice();
     getQuote();
-    setCalender();
-    scrollTop();
+    getCalender();
+    scrollTop(); 
 }
 
 $(loadForms);

@@ -9,17 +9,16 @@
         <meta http-equiv="X-UA-Compatible" content="id-edge">
         <link rel="shortcut icon" href="./images/AppLogo.png">
         <title>What is today?</title>
+        <link href="https://fonts.googleapis.com/css?family=Slackey&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="index.css">
-        <link href="https://fonts.googleapis.com/css?family=Walter+Turncoat&display=swap" rel="stylesheet">
     </head>
 <body>
     <div class="navBar">
-        <div id="burger-menu">&#9776;</div> 
         <img src="./images/AppLogo.png" class="applogo" alt="app logo">
         <header><h1>What is today?</h1></header>
     </div>
-    <div>
+    <div id="burger-menu">&#9776;</div> 
     <main>
         <div id ="left-side" class="hidden">
             <div class="menu">
@@ -32,16 +31,12 @@
             </div>
         </div>
         <div class = "main">
-            <!-- <ul id="navMenu">
-                    <li>Today's weather</li>
-                    <li>Get a Quote</li>
-                    <li>Advice for today</li>
-            </ul> -->
             <section id="greetings"></section>
             <section id="dateInfo"></section>
-            <button type="button" class="weatherInfo-link">Check today's weather</button>
+            <section id="quote" class="smallerText"></section>
+            <button type="button" class="weatherInfo-link"><img src="./images/icons8-thermometer-automation-64.png"> Check today's weather</button>
             <section id="holidays"></section>
-            <section id="todayHoliday"></section>
+            <section id="allHoliday"></section>
             <section id="userInput">
                 <h2>Find list of holidays:</h2>
                     <p>Select month and year:</p>
@@ -62,15 +57,12 @@
                         <option value="11">November</option>
                         <option value="12">December</option>
                     </select> 
-                    <!-- <select id ="holidayType" class="hidden" required>
-                    </select>  -->
                     <input type="submit" value="Find holidays">
                 </form>
             </section>
             <section id="monthlyHoliday"></section>
             <section id="weatherInfo"></section>
-            <section id="quote" class="smallerText"></section>
-            <section id="advice" class="smallerText"></section>
+
         </div>
     </main>
     <a id="topbtn">&#10506;</a>
