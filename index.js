@@ -145,14 +145,6 @@ function setCalender(holidays){
     `)
 }
 
-// get results from Adviceslip API
-function getAdvice(){
-    let loc = '#dailyAdvice';
-    fetch(adviceURL)
-        .then(response => response.json())
-        .then(responseJson => displayAdvice(responseJson))
-}
-
 // get results from Quote Garden API
 function getQuote(){
     let loc = '#dailyQuote';
