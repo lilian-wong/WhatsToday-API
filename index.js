@@ -106,15 +106,14 @@ function setCalender(holidays){
 
     //set days of the month 
     for(let j = 1;j<=lastDate; j++){  
-        let searchDate = new Date(thisYear+'-'+thisMonth+'-'+j);   
+        let searchDate = thisYear+'-'+thisMonth+'-'+j;
         let foundHoliday = isHoliday(monthlyHoliday,  searchDate);
         if(thisDate===j){
             if(foundHoliday===''){
                 dayHTML = dayHTML + `<li value="${j}"><span class="today">${j}</span></li>`;
             }
             else{
-                dayHTML = dayHTML + `<li value="${j}"><span class="today-holiday">${j}</span></li>`;
-                allHoliday = allHoliday +(searchDate.getMonth()+1)+'/'+j+' '+ '-'+ foundHoliday+' ';
+                dayHTML = dayHTML + `<li value="${j}"><span class="today-holiday" title ="${foundHoliday}">${j}</span></li>`;
             }
         }
         else{
@@ -122,8 +121,7 @@ function setCalender(holidays){
                 dayHTML = dayHTML + `<li value="${j}">${j}</li>`;
             }
             else{
-                dayHTML = dayHTML + `<li value="${j}"><span class="holiday">${j}</span></li>`;
-                allHoliday = allHoliday +(searchDate.getMonth()+1)+'/'+ j+' '+'-'+ foundHoliday+' ';
+                dayHTML = dayHTML + `<li value="${j}"><span class="holiday" title ="${foundHoliday}">${j}</span></li>`;
             }
         }
     }
@@ -166,7 +164,6 @@ function getWeather(zip, country){
 function searchHolidayByYear(holidays){
     let monthlyHolidayHTML = '';
     for (let i = 0; i< holidays.length; i++){
-
         let holidayDate= holidays[i]['date']['iso'];
         let holidayName = holidays[i]['name'];
         let holidayType = holidays[i]['type'];
@@ -179,7 +176,6 @@ function searchHolidayByYear(holidays){
 }
 
 // Check today's date and type of holiday from the response json file. If the date and type match, display the name of holiday, else display non holiday message 
-
 function setHoliday(holidays){
     let holidaysFound = [];
     for (let i = 0; i< holidays.length; i++){
@@ -202,12 +198,8 @@ function isHoliday(holidays, day){
     return '';
 }
 
-//“Good morning”  5:00 a.m. to 12:00 p.m. 
-//'Afternoon" " 12:01 PM to 5:00 PM. 
-//“Good evening” 5:01p.m. to 8:00 pm
-//"Good Night" "8:01 PM until 4:59 AM.
-//Return greeting base on time of the day.
-
+//“Good morning”  5:00 a.m. to 12:00 p.m. | 'Afternoon" " 12:01 PM to 5:00 PM. | “Good evening” 5:01p.m. to 8:00 pm
+//"Good Night" "8:01 PM until 4:59 AM. | Return greeting base on time of the day.
 function checkTime(){
     let currentHour = todayDate.getHours();
     let currentMin = todayDate.getMinutes();
@@ -292,14 +284,6 @@ function displayQuote(responseJson){
     )
 }
 
-function displayAdvice(responseJson){
-    let advice = responseJson.slip['advice'];
-    $('#advice').append(`
-    <h2>Daily Advice: </h2>
-    <p>"${advice}"</p>`
-    )
-}
-
 function displayHolidays(loc, holiday){
     $(loc).empty();
     $(loc).append(holiday);
@@ -357,9 +341,9 @@ function scrollTop(){
     });
 }
 
-$( function() {
+$(function(){
     $( document ).tooltip();
-} );
+});
 
 // load all functions
 function loadForms(){
