@@ -1,4 +1,4 @@
-*{
+*{ 
     box-sizing: border-box;
 }
 
@@ -21,7 +21,6 @@ body{
 .hidden{
     display: none;
 }
-
 
 #navMenu{
     margin:0px 0px;
@@ -101,6 +100,7 @@ header h1{
     width : 20px;
 }
 
+
 section{
     text-align: left;
     margin-left: 1em;
@@ -117,44 +117,6 @@ section{
 
 }
 
-#dateInfo{
-    width: 20em;
-    font-size:2em;
-    align-content: center;
-    margin: 0 auto;
-    background-color: aliceblue;
-    border: aliceblue 1px solid;
-    border-radius: 35px;
-    animation-name: stretch;
-    animation-duration: 1.5s; 
-    animation-timing-function: ease-out; 
-    animation-delay: 2;
-    animation-direction: alternate;
-    animation-iteration-count:2;
-    animation-fill-mode: none;
-    animation-play-state: running;
-
-}
-@keyframes stretch {
-    0% {
-      transform: scale(.1);
-      background-color: powderblue;
-      border-radius: 100%;
-    }
-    20% {
-        transform: scale(.1);
-        background-color: lightsteelblue;
-        border-radius: 100%;
-      }
-    50% {
-      background-color: skyblue;
-      border-radius: 80%;
-    }
-    100% {
-      transform: scale(1.5);
-      background-color:lightsteelblue;
-    }
-  }
 
 .smallerText{
     font-style: italic;
@@ -201,7 +163,6 @@ ul,li {
     width: 13.6%;
     color: white;
     text-align: center;
-
 }
 
 .weekdays li .weekend{
@@ -216,28 +177,25 @@ ul,li {
     padding-bottom: 1em;
     border-bottom-left-radius: 0.5em;
     border-bottom-right-radius: 0.5em;
-
 }
 
 .days li {
+    color: black;
     display: inline-block;
     width: 13.6%;
     text-align: center;
-    margin-bottom: 5px;
-    font-size:30px;
-    color:black;
-   
+    margin-bottom: 5
 }
 
 .days li .today {
     padding: 5px;
-    background: blue;
+    background: lightblue;
     color: white !important
 }
 
 .days li .today-holiday {
     padding: 5px;
-    background: blue;
+    background: lightblue;
     color:rgb(238, 84, 107) !important
 }
 
@@ -250,30 +208,17 @@ ul,li {
 /* larger screens */
 @media all and (min-width:600px){
 
-    header h1{
-        font-size:32px;
-    }
+    header h1{font-size:32px;}
 
-    .topBar{ 
-        justify-content: center;
-    }
+    .topBar{justify-content: center;}
 
-    #navMenu{
-        display: block;
-        
-    }
-    
-    .navBar{
-        justify-content: flex-start;
-    }
+    #navMenu{display: block;}
 
-    #burger-menu{ 
-        display: none; 
-    }
+    .navBar{justify-content: flex-start;}
 
-    main{
-        flex-flow: nowrap;
-    }
+    #burger-menu{display: none;}
+
+    main{flex-flow: nowrap;}
 
     section{
         margin-left: 3em;
