@@ -2,7 +2,6 @@
 'use strict';
 
 //API URLS
-const adviceURL = 'https://api.adviceslip.com/advice'; //Random Advice
 const quoteURL = 'https://quote-garden.herokuapp.com/quotes/random'; //Random Quotes
 const calendarificURL = 'https://calendarific.com/api/v2/holidays'; //Calendarific Global Holidays
 const ip_loc = 'https://ipapi.co/json/'; //ip address
@@ -13,7 +12,7 @@ const openWeather_api_key = 'cac41a545f1a6a3eadf04d709f83ea14';
 let countryCode ='US'; //string- required field : Default set as 'US'
 let today ='';
 
-// Set today Information
+// Set Date Information
 const todayDate = new Date();
 const thisYear = todayDate.getFullYear(); //integer- required field
 const thisMonth = todayDate.getMonth()+1; //The getMonth() method returns the month (from 0 to 11) for the specified date, according to local time
@@ -22,10 +21,6 @@ const thisWeekDay = todayDate.getDay();
 const monthText = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
 const weekDayShortText = ['Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat'];//Calander
 const weekDayText =['Sunday','Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday'];
-const christmasDay = 25;
-const christmasMonth = 12;
-const newYearDay = 1;
-const newYearMonth = 1;
 
 // holiday 
 function getWeatherInfo(){
@@ -176,24 +171,6 @@ function getWeather(zip, country){
         .then(responseJson => displayWeather(responseJson))
 }
 
-function setHolidayType(holidays){
-    let typeHoliday = [];
-    let uniqueTypeHoliday = [];
-    for(let i = 0; i<holidays.length; i++){
-        typeHoliday.push(holidays[i]['type']);
-    }
-
-    //Remove Duplicates
-    typeHoliday.sort();
-    uniqueTypeHoliday.push(String(typeHoliday[0]));
-    for(let j=0; j<typeHoliday.length-1; j++){
-        if(String(typeHoliday[j])!=String(typeHoliday[j+1])){
-            uniqueTypeHoliday.push(String(typeHoliday[j]));
-        }
-    }    
-    return(uniqueTypeHoliday);
-}
-
 function searchHolidayByYear(holidays){
     let monthlyHolidayHTML = '';
     for (let i = 0; i< holidays.length; i++){
@@ -215,7 +192,6 @@ function setHoliday(holidays){
     let holidaysFound = [];
     for (let i = 0; i< holidays.length; i++){
         if (holidays[i]['type'][0]+''==='Observance' || holidays[i]['type'][0]+''==='National holiday'){
-            console.log(holidays[i]['date']['iso'], holidays[i]['type'],holidays[i]['name']);
            holidaysFound.push({
                 date: holidays[i]['date']['iso'],
                 holidayName: holidays[i]['name']});
@@ -297,7 +273,7 @@ function setToday(){
     today = thisYear+'-'+thisMonth+'-'+thisDate;
     today = todayDate.toLocaleString('fr-CA', {year: 'numeric', month:'2-digit', day:'2-digit'});
     $('#dateInfo').append(`
-    <h2>It's ${weekDayText[thisWeekDay]}</h2>
+    <h2>It's ${weekDayText[thisWeekDay]}.</h2>
     <p>${today}</p>`);   
 }
 
@@ -361,12 +337,9 @@ function displayWeather(weather){
 }
 
 //Toggle burger menu button
-function toggleMenu(){
-    $('#burger-menu').on('click',function(){
-        $('#left-side').toggleClass('hidden');
-    })
-    $('#closeBurger').on('click',function(){
-        $('#left-side').toggleClass('hidden');
+function toggleMenu(htmlID, htmlClass){
+    $(htmlID).on('click',function(){
+        $(htmlClass).toggleClass('hidden');
     })
 }
 
@@ -392,15 +365,18 @@ function scrollTop(){
     });
 }
 
+$( function() {
+    $( document ).tooltip();
+} );
 
 // load all functions
 function loadForms(){
-    toggleMenu();
+    toggleMenu('#burger-menu','#left-side');
+    toggleMenu('#closeBurger','#left-side');
     displayGreetings();
     getWeatherInfo();
     setToday();
     getHolidayByYearMonth();
-    getAdvice();
     getQuote();
     getCalender();
     scrollTop(); 
