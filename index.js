@@ -5,7 +5,7 @@ const quoteURL = 'https://quote-garden.herokuapp.com/quotes/random'; //Random Qu
 const calendarificURL = 'https://calendarific.com/api/v2/holidays'; //Calendarific Global Holidays
 const ip_loc = 'https://ipapi.co/json/'; //ip address
 const weatherURL = 'https://api.openweathermap.org/data/2.5/weather'; //weather info
-const calendarific_api_key = 'a72beece340b8b1fdc911880a439f871777eb604';
+const calendarific_api_key = '2a760f5fd99f43f85a5c229a5c6da3d0b55acb1e';
 const openWeather_api_key = 'cac41a545f1a6a3eadf04d709f83ea14';
 
 let countryCode ='US'; //string- required field : Default set as 'US'
