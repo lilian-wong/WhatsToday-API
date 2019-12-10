@@ -10,6 +10,7 @@
         <link rel="shortcut icon" href="./images/AppLogo.png">
         <title>What is today?</title>
         <link href="https://fonts.googleapis.com/css?family=Slackey&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Fredoka+One&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="index.css">
         <link rel="stylesheet" href="animations.css">
@@ -25,49 +26,48 @@
             <div class="menu">
                 <ol id="menu-item" >
                     <li id="closeBurger">X</li>
-                    <li id="weather" class="weatherInfo-link">Today's weather</li>
-                    <li id="dailyQuote" class="dailyQuote-link">Get a Quote</li>
+                    
+                    <li id="monthlyHolidaySearch" class="monthlyHolidaySearch-link">Search holidays</li>
                 </ol> 
             </div>
         </div>
         <div class = "main">
             <section id="greetings"></section>
             <section id="dateInfo"></section>
-            <section id="quote" class="smallerText"></section>
-            <button type="button" class="weatherInfo-link"><img src="./images/icons8-thermometer-automation-64.png"> Check today's weather</button>
+            <section id="quote" class="quoteText"></section>
+            <img src="./images/icons8-thermometer-automation-64.png" width="50px" height="50px">
+            <button type="button" class="weatherInfo-link"> Check today's weather</button>
+            <section id="weatherInfo" class="hidden"></section>
             <section id="holidays"></section>
-            <section id="allHoliday"></section>
             <div class = "searchHoliday">
                 <section id="userInput">
                     <h2>Find list of holidays:</h2>
                         <p>Select month and year:</p>
-                    <form id="holidaySearchForm">
-                        <input type = "number" id="yearEnter" class "yearInput" value = "2019"  maxlength= "4" min="1900" max="2049" required>
-                        <select id = "holidayMonth" required>
-                            <option default>Please select month</option>
-                            <option value="1">January</option>
-                            <option value="2">February</option>
-                            <option value="3">March</option>
-                            <option value="4">April</option>
-                            <option value="5">May</option>
-                            <option value="6">June</option>
-                            <option value="7">July</option>
-                            <option value="8">August</option>
-                            <option value="9">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option>
-                        </select> 
-                        <input type="submit" value="Find holidays">
+                        <form id="holidaySearchForm">
+                            <input type = "number" id="yearEnter" class "yearInput" value = "2019" maxlength= "4" min="1900" max="2049" required>
+                            <select id = "holidayMonth" required>
+                                <option default>Please select month</option>
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select> 
+                        <input type="submit" value="Search" class="search-button">
                     </form>
                 </section>
-            <section id="monthlyHoliday"></section>
+            <section name="monthlyHoliday" id="monthlyHoliday"></section>
             </div>
-            <section id="weatherInfo"></section>
-
         </div>
     </main>
-    <a id="topbtn">&#10506;</a>
+    <a id="topbtn">&#8682;</a>
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"></script>
     <script src="index.js"></script>
