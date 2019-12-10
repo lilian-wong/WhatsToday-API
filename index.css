@@ -39,11 +39,12 @@ header h1{
     padding-top:10px;
     padding-bottom:10px;
     margin-bottom: 10px;
+    color:#3671C9;
 }
 
 .navBar{
     display:flex;
-    background-color:linen;
+    background-color:rgb(251, 255, 227);
     height: 90px;
     width: 100%;  
 }
@@ -100,6 +101,12 @@ header h1{
     width : 20px;
 }
 
+.searchHoliday{
+    background-color: lightsteelblue;
+    border-radius: 10px;
+    margin-left: 3em;
+    margin-right: 3em;
+}
 
 section{
     text-align: left;
