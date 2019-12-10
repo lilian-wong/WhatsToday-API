@@ -63,6 +63,7 @@ function getCalender(){
             $('.searchHoliday').append(`Unable to retrieve holidays due to server error code: ${error.message}`);
             setCalender('');
         })
+
 }
 
 function getHolidayByYearMonth(){
@@ -110,8 +111,12 @@ function setCalender(holidays){
 
     //set days of the month 
     for(let j = 1;j<=lastDate; j++){  
-        let searchDate = new Date(thisYear+'-'+thisMonth+'-'+j);
-        searchDate= searchDate.toLocaleString('fr-CA', {year: 'numeric', month:'2-digit', day:'2-digit'});
+        let tDate = j;
+        if(j<10){
+            tDate = '0'+tDate;
+        }
+        let searchDate = thisYear+'-'+thisMonth+'-'+tDate;
+        
         let foundHoliday = isHoliday(monthlyHoliday,  searchDate);
         
         if(thisDate===j){
