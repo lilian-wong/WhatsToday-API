@@ -1,6 +1,6 @@
 
 #dateInfo{
-    width: 20em;
+    width: 16em;
     font-size:1em;
     align-content: center;
     text-align: center;
@@ -43,3 +43,29 @@
       background-color:rgb(237, 243, 250);
     }
   }
+
+/*--scroll button--*/
+
+#topbtn{
+  display: none;
+  position: fixed;
+  right: 0px;
+  bottom: 10px;
+  font-size: 30px;
+  border-radius: 50px 50px;
+  color: deepskyblue;
+}
+
+#topbtn:hover{
+  color: darkslategrey;
+}
+
+/*--weather dialogbox--*/
+.ui-dialog .ui-dialog-content {
+  font-family: 'Fredoka One', cursive;
+  border: 0;
+  margin: 0;
+  background:whitesmoke;  
+  overflow: auto;
+  zoom: 1;
+}

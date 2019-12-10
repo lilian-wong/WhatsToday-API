@@ -57,10 +57,10 @@ function getCalender(){
             throw new Error(response.status);
         })
         .then(responseJson =>{
-            setCalender(responseJson.response.holidays);
+                setCalender(responseJson.response.holidays);
         })  
         .catch(function(error){
-            $('#monthlyHoliday').append(`Unable to retrieve holidays due to server error code: ${error.message}`);
+            $('.searchHoliday').append(`Unable to retrieve holidays due to server error code: ${error.message}`);
             setCalender('');
         })
 }
@@ -116,10 +116,10 @@ function setCalender(holidays){
         
         if(thisDate===j){
             if(foundHoliday===''){
-                dayHTML = dayHTML + `<li value="${j}"><span class="today">${j}</span></li>`;
+                dayHTML = dayHTML + `<li value="${j}"><span class="today" title="Today">${j}</span></li>`;
             }
             else{
-                dayHTML = dayHTML + `<li value="${j}"><span class="today-holiday" title ="${foundHoliday}">${j}</span></li>`;
+                dayHTML = dayHTML + `<li value="${j}"><span class="today-holiday" title ="Today ${foundHoliday}">${j}</span></li>`;
             }
         }
         else{
@@ -215,7 +215,6 @@ function checkTime(){
         else{
             return 'Good morning!';
         }
-        
     }
     else if(currentHour > 12 && currentHour <= 17){
         if(currentHour == 17 && currentMin > 0){
@@ -259,7 +258,7 @@ function displayGreetings(){
 }
 
 function setToday(){
-    today = `${monthText[todayDate.getMonth()]}, ${thisDate} ${thisYear}`;
+    today = `${monthText[todayDate.getMonth()]} ${thisDate}, ${thisYear}`;
     $('#dateInfo').append(`
     <h2>It's ${weekDayText[thisWeekDay]}.</h2>
     <p>${today}</p>`);   
@@ -271,7 +270,6 @@ function displayQuote(responseJson){
     if(author===''){
         author = 'unknown';
     }
-
     $('#quote').append(`
     <p>"${responseJson.quoteText}"</p>
     <p>-${author}</p>`
@@ -297,6 +295,7 @@ function getCelsius(kevin){
 function displayWeather(weather){ 
     let temp = weather['main'].temp;
     $('#weatherInfo').empty();
+    $('#weatherInfo').removeClass("hidden");
     $('#weatherInfo').dialog();
     $('#weatherInfo').append(`
     <h2>Today's Weather ${weather['name']}:</h2>
@@ -313,13 +312,8 @@ function toggleMenu(htmlID, htmlClass){
     })
 }
 
-$('.dailyQuote-link').on('click',function(){
-    let link = document.getElementById('quote');
-    link.scrollIntoView();
-});
-
-$('.dailyAdvice-link').on('click',function(){
-    let link = document.getElementById('advice');
+$('.monthlyHolidaySearch-link').on('click',function(){
+    let link = document.getElementById('monthlyHoliday');
     link.scrollIntoView();
 });
 
@@ -327,6 +321,17 @@ $('.weatherInfo-link').on('click',function(){
     let link = document.getElementById('weatherInfo');
     link.scrollIntoView();
 });
+
+function setScroll(){
+    $(window).scroll(function(event){
+    if($(window).scrollTop()>20){
+        topbtn.style.display ='block';
+    }
+    else{
+        topbtn.style.display='none';
+    }        
+    });
+}
 
 function scrollTop(){
     $('#topbtn').on('click', function(){
@@ -349,6 +354,7 @@ function loadForms(){
     getHolidayByYearMonth();
     getQuote();
     getCalender();
+    setScroll();
     scrollTop(); 
 }
 
