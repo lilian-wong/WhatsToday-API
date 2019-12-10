@@ -1,4 +1,3 @@
-
 'use strict';
 
 //API URLS
@@ -55,10 +54,14 @@ function getCalender(){
             if(response.ok){
                 return response.json();
             }
-            throw new Error(response.message);
+            throw new Error(response.status);
         })
         .then(responseJson =>{
-            setCalender(responseJson.response.holidays)
+            setCalender(responseJson.response.holidays);
+        })  
+        .catch(function(error){
+            $('#monthlyHoliday').append(`Unable to retrieve holidays due to server error code: ${error.message}`);
+            setCalender('');
         })
 }
 
@@ -80,6 +83,7 @@ $('#holidaySearchForm').submit(function(event){
 
 //Generate HTML code for Calender
 function setCalender(holidays){
+    
     let monthlyHoliday = setHoliday(holidays);
     let lastDay = new Date(thisYear, thisMonth, 0);
     let lastDate = lastDay.getDate();
@@ -106,8 +110,10 @@ function setCalender(holidays){
 
     //set days of the month 
     for(let j = 1;j<=lastDate; j++){  
-        let searchDate = thisYear+'-'+thisMonth+'-'+j;
+        let searchDate = new Date(thisYear+'-'+thisMonth+'-'+j);
+        searchDate= searchDate.toLocaleString('fr-CA', {year: 'numeric', month:'2-digit', day:'2-digit'});
         let foundHoliday = isHoliday(monthlyHoliday,  searchDate);
+        
         if(thisDate===j){
             if(foundHoliday===''){
                 dayHTML = dayHTML + `<li value="${j}"><span class="today">${j}</span></li>`;
@@ -188,8 +194,7 @@ function setHoliday(holidays){
     return holidaysFound;
 }
 
-function isHoliday(holidays, day){
-    day = day.toLocaleString('fr-CA', {year: 'numeric', month:'2-digit', day:'2-digit'});
+function isHoliday(holidays, day){  
     for(let i=0;i<holidays.length; i++){
         if(holidays[i].date === day){
             return(holidays[i].holidayName);
@@ -254,21 +259,10 @@ function displayGreetings(){
 }
 
 function setToday(){
-    today = thisYear+'-'+thisMonth+'-'+thisDate;
-    today = todayDate.toLocaleString('fr-CA', {year: 'numeric', month:'2-digit', day:'2-digit'});
+    today = `${monthText[todayDate.getMonth()]}, ${thisDate} ${thisYear}`;
     $('#dateInfo').append(`
     <h2>It's ${weekDayText[thisWeekDay]}.</h2>
     <p>${today}</p>`);   
-}
-
-function displayHolidaysType(holidayType){
-    //set holiday input type 
-    $('#holidayType').append(`<option default>Please select holiday type</option>`);
-    for (let i = 0; i<holidayType.length; i++){
-        $('#holidayType').append(`
-            <option value="${holidayType[i]}">${holidayType[i]}</option>
-        `)
-    }
 }
 
 function displayQuote(responseJson){

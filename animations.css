@@ -3,6 +3,7 @@
     width: 20em;
     font-size:1em;
     align-content: center;
+    text-align: center;
     margin: 0 auto;
     background-color: aliceblue;
     border: aliceblue 1px solid;
@@ -23,6 +24,11 @@
       background-color: powderblue;
       border-radius: 100%;
     }
+    10% {
+      transform: scale(.1);
+      background-color:lightskyblue;
+      border-radius: 100%;
+    }
     20% {
         transform: scale(.1);
         background-color: lightsteelblue;
@@ -34,6 +40,6 @@
     }
     100% {
       transform: scale(1.5);
-      background-color:lightsteelblue;
+      background-color:rgb(237, 243, 250);
     }
   }
