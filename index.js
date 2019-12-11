@@ -358,7 +358,7 @@ function loadForms(){
     setToday();
     getHolidayByYearMonth();
     getQuote();
-    getCalender();
+    //getCalender();
     setScroll();
     scrollTop(); 
 }
