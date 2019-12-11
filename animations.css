@@ -1,21 +1,22 @@
+/* Additional styling for WhatsToday app */
 
 #dateInfo{
-    width: 16em;
-    font-size:1em;
-    align-content: center;
-    text-align: center;
-    margin: 0 auto;
-    background-color: aliceblue;
-    border: aliceblue 1px solid;
-    border-radius: 35px;
-    animation-name: stretch;
-    animation-duration: 1.5s; 
-    animation-timing-function: ease-out; 
-    animation-delay: 2;
-    animation-direction: alternate;
-    animation-iteration-count:2;
-    animation-fill-mode: none;
-    animation-play-state: running;
+  width: 16em;
+  font-size:1em;
+  align-content: center;
+  text-align: center;
+  margin: 0 auto;
+  background-color: aliceblue;
+  border: aliceblue 1px solid;
+  border-radius: 35px;
+  animation-name: stretch;
+  animation-duration: 2.5s; 
+  animation-timing-function: ease-out; 
+  animation-delay: 2;
+  animation-direction: alternate;
+  animation-iteration-count:2;
+  animation-fill-mode: none;
+  animation-play-state: running;
 }
 
 @keyframes stretch {
@@ -52,12 +53,15 @@
   right: 0px;
   bottom: 10px;
   font-size: 30px;
-  border-radius: 50px 50px;
+  background-color: gainsboro;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
   color: deepskyblue;
 }
 
 #topbtn:hover{
   color: darkslategrey;
+  background-color: gainsboro;
 }
 
 /*--weather dialogbox--*/
