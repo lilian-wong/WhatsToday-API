@@ -73,3 +73,82 @@
   overflow: auto;
   zoom: 1;
 }
+
+/* calender setting*/
+ul,li {
+  list-style-type: none;
+  padding: 0;
+}
+
+.month {
+  padding: 5px 5px;
+  border-top-left-radius: 0.5em;
+  border-top-right-radius: 0.5em;
+  width: 100%;
+  background: darkcyan;
+  text-align: center;
+}
+
+.month ul li {
+  color: white;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.weekdays {
+  font-size: 20px;
+  margin: 0;
+  padding: 0;
+  background-color: darkorange;
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.weekdays li {
+  display: inline-block;
+  width: 13.6%;
+  color: white;
+  text-align: center;
+}
+
+.weekdays li .weekend{
+  color:rgb(6, 6, 111);
+  font-weight: bold;
+}
+
+.days {
+  padding: 10px 0px;
+  background: #eee;
+  margin: 0;
+  padding-bottom: 1em;
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.days li {
+  color: black;
+  display: inline-block;
+  width: 13.6%;
+  text-align: center;
+  margin-bottom: 5
+}
+
+.days li .today {
+  padding: 5px;
+  background: lightblue;
+  color: white !important
+}
+
+.days li .today-holiday {
+  padding: 5px;
+  background: lightblue;
+  color:rgb(238, 84, 107) !important
+}
+
+.days li .holiday {
+  border: solid 5px rgb(238, 84, 107);
+  border-radius: 20px;
+}
+
+/*------------------------*/
