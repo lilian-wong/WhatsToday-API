@@ -318,12 +318,13 @@ function toggleMenu(htmlID, htmlClass){
 }
 
 $('.monthlyHolidaySearch-link').on('click',function(){
-    let link = document.getElementById('monthlyHoliday');
+    let link = document.getElementById('monthlyHolidaySearch');
     link.scrollIntoView();
 });
 
-$('.weatherInfo-link').on('click',function(){
-    let link = document.getElementById('weatherInfo');
+$('.dailyAstronomy-link').on('click',function(){
+    getAPOD(thisYear+'-'+thisMonth+'-'+thisDate);
+    let link = document.getElementById('dailyAstronomy');
     link.scrollIntoView();
 });
 
