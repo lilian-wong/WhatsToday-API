@@ -1,4 +1,5 @@
-<!--This app utilize API from calendarific, openWeather, quote-garden.herokuapp to get information about today-->
+<!--This app pull information from calendarific, openWeather, quote-garden.herokuapp and display on the app. Users could
+search holiday by month and year. Users can view the astronomy picture of the day-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +25,8 @@
     <div class="right-nav-items">
         <ol id="nav-menu" >
             <li id="top-HolidaySearch" class="monthlyHolidaySearch-link">Search holidays</li>
-            <li  class="dailyAstronomy-link">Get Astronomy Picture of the Day</li>
+            <li class="dailyAstronomy-link">Get Astronomy Picture of the Day</li>
+            <li class="weatherInfo-link"> Check today's weather</li>
         </ol> 
     </div>
     <div id="burger-menu">&#9776;</div> 
@@ -33,8 +35,9 @@
             <div class="menu">
                 <ol id="menu-item" >
                     <li id="closeBurger">X</li>
-                    <li id="monthlyHolidaySearch" class="monthlyHolidaySearch-link">Search holidays</li>
+                    <li id="holidaySearch" class="monthlyHolidaySearch-link">Search holidays</li>
                     <li class="dailyAstronomy-link">Get Astronomy Picture of the Day</li>
+                    <li class="weatherInfo-link"> Check today's weather<img src="./images/icons8-thermometer-automation-64.png" width="25px" height="25px" alt="thermometer-icon"></li>
                 </ol> 
             </div>
         </div>
@@ -42,8 +45,6 @@
             <section id="greetings"></section>
             <section id="dateInfo"></section>
             <section id="quote" class="quoteText"></section>
-            <img src="./images/icons8-thermometer-automation-64.png" width="50px" height="50px" alt="thermometer-icon">
-            <button type="button" class="weatherInfo-link"> Check today's weather</button>
             <section id="weatherInfo" class="hidden"></section>
             <section id="holidays"></section>
             <div class = "searchHoliday">
@@ -70,6 +71,7 @@
                             </select> <br>
                         <input type="submit" value="Search" class="search-button">
                     </form>
+                    <p>Power by calendarific</p>
                 </section>
             </div>
             <section name="monthlyHoliday" id="monthlyHoliday"></section>
