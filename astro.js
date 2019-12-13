@@ -21,9 +21,7 @@ function displayImage(APOD){
 }
 
 function getAPOD(date){
-
     let url = generateAPODParam(date);
-    
     fetch(url)
         .then(response => {
             if(response.ok){
@@ -37,10 +35,4 @@ function getAPOD(date){
         .catch(function(error){
             return '';
         })
-}
-
-function setBackground(loc, img){
-    console.log(img);
-   $(loc).css('background-image', 'url('+img+')');
-
 }

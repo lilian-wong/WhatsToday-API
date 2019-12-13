@@ -17,10 +17,11 @@ footer{
 
 #nav-menu{
     display: none;
-    background-color:#25567d;
+    background-color:#0e7499;
     text-align-last: right;
     margin:0px 0px;
     padding:0px;
+   
 }
 
 #nav-menu li{
@@ -41,10 +42,10 @@ header h1{
 }
 
 .navBar{
-    display:flex;
+    display:flex;   
     align-items: baseline;
     justify-content: center;
-    background-color:#25567d;
+    background-color: #0e7499;
     height: 90px;
     width: 100%;  
 }
@@ -72,7 +73,7 @@ header h1{
     font-size: 1.5em;
     background-color:lightskyblue;
     width: 100%;
-    height: 120px;
+    height: 150px;
     padding-left: 5px;
     margin-block-start: 0em;
     margin-block-end: 0em;
@@ -93,19 +94,6 @@ header h1{
 input, select, button{
     font-size: 14px;
     font-family: 'Fredoka One', cursive;
-}
-
-.weatherInfo-link{
-    background-color: gold;
-    border: none;
-    color: black;
-    font-size: 16px;
-    border-radius: 5px;
-}
-
-.weatherInfo-link:hover{
-    background-color: #4CAF50; 
-    color: white;
 }
 
 .search-button{
@@ -134,10 +122,11 @@ input, select, button{
 .yearInput{width: 25px;}
 
 .searchHoliday{
-    background-color: lightsteelblue;
+    background-color: #e8d3db;
     border-radius: 10px;
     margin-left: 3em;
     margin-right: 3em;
+    border: so;
 }
 
 section{
@@ -164,13 +153,13 @@ section{
 
 .astro-container{
     position: relative;
-    height: 300px;
 }
 
 .text-block{
+    font-size: 12px;
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 5px;
+    right: 5px;
     background-color: black;
     color: white;
     padding-left: 20px;
@@ -180,17 +169,29 @@ section{
 /* larger screens */
 @media all and (min-width:800px){
 
-    header h1{font-size:32px;}
+    header h1{
+        font-size:32px;
+    }
 
-    .topBar{justify-content: center;}
+    .topBar{
+        justify-content: center;
+    }
 
-    #nav-menu{display: block;}
+    #nav-menu{
+        display: block;
+    }
 
-    .navBar{justify-content: flex-start;}
+    .navBar{
+        justify-content: flex-start;
+    }
 
-    #burger-menu{display: none;}
+    #burger-menu{
+        display: none;
+    }
 
-    main{flex-flow: nowrap;}
+    main{
+        flex-flow: nowrap;
+    }
 
     section{
         margin-left: 3em;

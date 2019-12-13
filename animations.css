@@ -6,8 +6,8 @@
   align-content: center;
   text-align: center;
   margin: 0 auto;
-  background-color: aliceblue;
-  border: aliceblue 1px solid;
+  background-color: whitesmoke;
+  border: rgb(238, 84, 107) 5px solid;
   border-radius: 35px;
   animation-name: stretch;
   animation-duration: 2.5s; 
@@ -20,43 +20,42 @@
 }
 
 @keyframes stretch {
-    0% {
-      transform: scale(.1);
-      background-color: powderblue;
-      border-radius: 100%;
-    }
-    10% {
-      transform: scale(.1);
-      background-color:lightskyblue;
-      border-radius: 100%;
-    }
-    20% {
-        transform: scale(.1);
-        background-color: lightsteelblue;
-        border-radius: 100%;
-      }
-    50% {
-      background-color: skyblue;
-      border-radius: 80%;
-    }
-    100% {
-      transform: scale(1.5);
-      background-color:rgb(237, 243, 250);
-    }
+  0% {
+    transform: scale(.1);
+    background-color: powderblue;
+    border-radius: 100%;
   }
+  10% {
+    transform: scale(.1);
+    background-color:lightskyblue;
+    border-radius: 100%;
+  }
+  20% {
+      transform: scale(.1);
+      background-color: lightsteelblue;
+      border-radius: 100%;
+    }
+  50% {
+    background-color: skyblue;
+    border-radius: 80%;
+  }
+  100% {
+    transform: scale(1.5);
+    background-color:rgb(237, 243, 250);
+  }
+}
 
 /*--scroll button--*/
-
 #topbtn{
   display: none;
   position: fixed;
   right: 0px;
   bottom: 10px;
   font-size: 30px;
-  background-color: gainsboro;
+  background-color: #ebb267;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  color: deepskyblue;
+  color: red;
 }
 
 #topbtn:hover{
