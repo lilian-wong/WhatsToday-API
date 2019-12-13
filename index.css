@@ -17,7 +17,7 @@ footer{
 
 #nav-menu{
     display: none;
-    background-color:#0e7499;
+    background-color:#214dad;
     text-align-last: right;
     margin:0px 0px;
     padding:0px;
@@ -45,7 +45,7 @@ header h1{
     display:flex;   
     align-items: baseline;
     justify-content: center;
-    background-color: #0e7499;
+    background-color: #214dad;
     height: 90px;
     width: 100%;  
 }
