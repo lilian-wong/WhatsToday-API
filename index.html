@@ -20,7 +20,6 @@ search holiday by month and year. Users can view the astronomy picture of the da
     <div class="navBar">
         <img src="./images/AppLogo.png" class="applogo" alt="app logo">
         <header><h1>What is today?</h1></header>
-
     </div>
     <div class="right-nav-items">
         <ol id="nav-menu" >
@@ -30,25 +29,23 @@ search holiday by month and year. Users can view the astronomy picture of the da
         </ol> 
     </div>
     <div id="burger-menu">&#9776;</div> 
+    <div id ="left-side" class="hidden">
+            <ol id="menu-item" >
+                <div class="close-btn"><li id="closeBurger">X</li></div>
+                <li id="holidaySearch" class="monthlyHolidaySearch-link">Search holidays</li>
+                <li class="dailyAstronomy-link">Get Astronomy Picture of the Day</li>
+                <li class="weatherInfo-link">Check today's weather</li>
+            </ol> 
+    </div>
     <main>
-        <div id ="left-side" class="hidden">
-            <div class="menu">
-                <ol id="menu-item" >
-                    <li id="closeBurger">X</li>
-                    <li id="holidaySearch" class="monthlyHolidaySearch-link">Search holidays</li>
-                    <li class="dailyAstronomy-link">Get Astronomy Picture of the Day</li>
-                    <li class="weatherInfo-link"> Check today's weather<img src="./images/icons8-thermometer-automation-64.png" width="25px" height="25px" alt="thermometer-icon"></li>
-                </ol> 
-            </div>
-        </div>
         <div class = "main">
             <section id="greetings"></section>
             <section id="dateInfo"></section>
             <section id="quote" class="quoteText"></section>
             <section id="weatherInfo" class="hidden"></section>
             <section id="holidays"></section>
-            <div class = "searchHoliday">
-                <section id="monthlyHolidaySearch">
+            <section class = "searchHoliday">
+                <div id="monthlyHolidaySearch">
                     <h2>Find list of holidays:</h2>
                         <form id="holidaySearchForm">
                             <label for="yearEnter">Enter Year</label>
@@ -71,10 +68,10 @@ search holiday by month and year. Users can view the astronomy picture of the da
                             </select> <br>
                         <input type="submit" value="Search" class="search-button">
                     </form>
-                    <p>Power by calendarific</p>
-                </section>
-            </div>
-            <section name="monthlyHoliday" id="monthlyHoliday"></section>
+                        <p>Power by calendarific</p>
+                    <div name="monthlyHoliday" id="monthlyHoliday"></div>
+                </div>
+            </section>
             <section id="dailyAstronomy">
                 <div class="astro-container">
 

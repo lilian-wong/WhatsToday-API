@@ -32,7 +32,12 @@ $('.weatherInfo-link').click(function(){
                 throw new Error(response.message);
             }
         )
-       .then (responseJson => getWeather(responseJson.postal, countryCode))
+       .then (responseJson => {
+           getWeather(responseJson.postal, countryCode);
+        })
+       .catch(function(error){
+            alert(`Something went wrong ${error.message}`);
+       })
 });
 }
 
@@ -167,6 +172,9 @@ function getQuote(){
             response.json()
         )
         .then(responseJson => displayQuote(responseJson))
+        .catch(function(error){
+            $('#quote').append(`Unable to retrieve quote due to server error code: ${error.message}`);
+        })
 }
 
 // get weather info from OpenWeather API
@@ -174,19 +182,22 @@ function getWeather(zip, country){
     let url = generateWeatherParam(zip, country);
     fetch (url)
         .then(response => response.json())
-        .then(responseJson => displayWeather(responseJson))
+        .then(responseJson => {
+                if(responseJson.cod ===200){
+                    displayWeather(responseJson);
+                }
+                else{
+                    alert('Unable to retrieve weather information due to '+responseJson.message);
+                }
+            })
 }
 
 // Retrieve each holiday date, name and type and display on the screen
 function searchHoliday(holidays){
     let monthlyHolidayHTML = '';
     for (let i = 0; i< holidays.length; i++){
-        // let holidayDate= holidays[i]['date']['iso'];
-        // let holidayName = holidays[i]['name'];
-        // let holidayType = holidays[i]['type'];
         if (String(holidays[i]['date']['datetime'].year) === $('#yearEnter').val() &&
         String(holidays[i]['date']['datetime'].month) === $('#holidayMonth').val()){
-        // monthlyHolidayHTML = monthlyHolidayHTML + `<p>${holidayDate} - ${holidayName} (${holidayType})</p>`;
         monthlyHolidayHTML = monthlyHolidayHTML + `<p>${holidays[i]['date']['iso']} - ${holidays[i]['name']} (${holidays[i]['type']})</p>`; 
         }
     }   
@@ -312,7 +323,7 @@ function displayWeather(weather){
     $('#weatherInfo').removeClass("hidden");
     $('#weatherInfo').dialog();
     $('#weatherInfo').append(`
-    <h2>Today's Weather ${weather['name']}:</h2>
+    <h2>Today's Weather ${weather['name']}, ${weather['sys'].country}:</h2>
     <p>Temp: ${getCelsius(temp)}°C/ ${getFahrenheit(temp)}°F Humidity:${weather['main'].humidity} </p>
     <p>Weather: ${weather['weather'][0].main} ${weather['weather'][0].description}</p>
     <span><img src="https://openweathermap.org/img/wn/${weather['weather'][0].icon}@2x.png"><span>
@@ -370,7 +381,7 @@ function loadForms(){
     setToday();
     getHolidayByYearMonth();
     getQuote();
-    getCalender();
+    //getCalender();
     setScroll();
     scrollTop(); 
 }
