@@ -14,16 +14,14 @@ function displayImage(APOD){
             <h3 id="astro-title" >Astronomy Picture of the Day</h3>
             <img src="${APOD.hdurl}" width="100%" height="500px" alt="${APOD.title}">
             <div class="text-block">
-                <p>Credit:${APOD.copyright} Title: ${APOD.title}</p>
+                <p>Credit:${APOD.copyright} <br>Title: ${APOD.title}</p>
             </div>
         `)
     }
 }
 
 function getAPOD(date){
-
     let url = generateAPODParam(date);
-    
     fetch(url)
         .then(response => {
             if(response.ok){
@@ -37,10 +35,4 @@ function getAPOD(date){
         .catch(function(error){
             return '';
         })
-}
-
-function setBackground(loc, img){
-    console.log(img);
-   $(loc).css('background-image', 'url('+img+')');
-
 }

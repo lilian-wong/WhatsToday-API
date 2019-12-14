@@ -15,13 +15,13 @@ let today ='';
 const todayDate = new Date();
 const thisYear = todayDate.getFullYear(); //integer- required field
 const thisMonth = todayDate.getMonth()+1; //The getMonth() method returns the month (from 0 to 11) for the specified date, according to local time
-const thisDate = todayDate.getDate();
+const thisDate = todayDate.getDate(); 
 const thisWeekDay = todayDate.getDay();
-const monthText = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
-const weekDayShortText = ['Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat'];//Calander
+const monthText = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const weekDayShortText = ['Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat']; 
 const weekDayText =['Sunday','Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday'];
 
-// holiday 
+// When click the weather link, fetch zip code from https://ipapi.co/json/. Then pass the zip code to get weather information from openweathermap
 function getWeatherInfo(){
 $('.weatherInfo-link').click(function(){
     fetch (ip_loc)
@@ -32,7 +32,12 @@ $('.weatherInfo-link').click(function(){
                 throw new Error(response.message);
             }
         )
-       .then (responseJson => getWeather(responseJson.postal, countryCode))
+       .then (responseJson => {
+           getWeather(responseJson.postal, countryCode);
+        })
+       .catch(function(error){
+            alert(`Something went wrong ${error.message}`);
+       })
 });
 }
 
@@ -46,7 +51,7 @@ function generateCalenderParam(calendarific_api_key,countryCode,year,month){
     return `${calendarificURL}?api_key=${calendarific_api_key}&country=${countryCode}&year=${year}&month=${month}`;
 }
 
-// function getTodayHoliday(){
+//create parameter for calling calendarific api 
 function getCalender(){
     let url = generateCalenderParam(calendarific_api_key,countryCode,thisYear, thisMonth);
     fetch(url)
@@ -57,15 +62,16 @@ function getCalender(){
             throw new Error(response.status);
         })
         .then(responseJson =>{
+                //create calender with the holiday info from calendarific api
                 setCalender(responseJson.response.holidays);
         })  
         .catch(function(error){
             $('.searchHoliday').append(`Unable to retrieve holidays due to server error code: ${error.message}`);
-            setCalender('');
+            setCalender(''); 
         })
-
 }
 
+// When user click search button,  pass api_key, countryCode, the year and month
 function getHolidayByYearMonth(){
 $('#holidaySearchForm').submit(function(event){
     event.preventDefault(); 
@@ -77,26 +83,31 @@ $('#holidaySearchForm').submit(function(event){
             }
         })
         .then(responseJson => {
-            searchHolidayByYear(responseJson.response.holidays)
+            searchHoliday(responseJson.response.holidays)
         })
     })
 }
 
 //Generate HTML code for Calender
 function setCalender(holidays){
-    
+    //Get holiday information from calendarific API
     let monthlyHoliday = setHoliday(holidays);
+    //Get the last day of current month
     let lastDay = new Date(thisYear, thisMonth, 0);
+    //Get the last date of the current month
     let lastDate = lastDay.getDate();
+    //set the first weekday of current month and year
     let firstWeekDay = new Date(thisYear, thisMonth, -1);
+    //set the first week day of current month and year
     firstWeekDay = firstWeekDay.getDay();
     let weekDayHTML ='';
     let dayHTML ='';
-    let allHoliday = '';
+    let allHoliday = ''; //In case of holiday did not pull, calender will still be created.
 
-    //Generate weekdays text
+    //Generate weekday header: Sun, Mon, Tue, Wed, Thu, Fri, Sat
     for(let i = 0;i<weekDayShortText.length; i++){
         if(i === 0 || i ===6){
+            //highlight weekend (Saturday and Sunday)
             weekDayHTML = weekDayHTML + `<li><span class="weekend">${weekDayShortText[i]}</span></li>`;
         }
         else{
@@ -104,57 +115,56 @@ function setCalender(holidays){
         } 
     }
 
-    //set spacing for weekdays
+    //set spacing for calender. Create blank space before reaching first week day
     for(let k=1; k<firstWeekDay;k++){
         dayHTML = dayHTML + '<li>'+ ' ' + '</li>';
     }
 
-    //set days of the month 
-    for(let j = 1;j<=lastDate; j++){  
-        let tDate = j;
-        if(j<10){
+    //Draw days starting from 1st day of month
+    for(let dayOfMonth = 1;dayOfMonth<=lastDate; dayOfMonth++){  
+        let tDate = dayOfMonth; 
+        if(dayOfMonth<10){
             tDate = '0'+tDate;
         }
-        let searchDate = thisYear+'-'+thisMonth+'-'+tDate;
-        
+        let searchDate = thisYear+'-'+thisMonth+'-'+tDate; //Set date format YYYY-MM-DD
         let foundHoliday = isHoliday(monthlyHoliday,  searchDate);
         
-        if(thisDate===j){
+        if(thisDate===dayOfMonth){
             if(foundHoliday===''){
-                dayHTML = dayHTML + `<li value="${j}"><span class="today" title="Today">${j}</span></li>`;
+                dayHTML = dayHTML + `<li value="${dayOfMonth}"><span class="today" title="Today">${dayOfMonth}</span></li>`;
             }
             else{
-                dayHTML = dayHTML + `<li value="${j}"><span class="today-holiday" title ="Today ${foundHoliday}">${j}</span></li>`;
+                dayHTML = dayHTML + `<li value="${dayOfMonth}"><span class="today-holiday" title ="Today ${foundHoliday}">${dayOfMonth}</span></li>`;
             }
         }
         else{
             if(foundHoliday===''){
-                dayHTML = dayHTML + `<li value="${j}">${j}</li>`;
+                dayHTML = dayHTML + `<li value="${dayOfMonth}">${dayOfMonth}</li>`;
             }
             else{
-                dayHTML = dayHTML + `<li value="${j}"><span class="holiday" title ="${foundHoliday}">${j}</span></li>`;
+                dayHTML = dayHTML + `<li value="${dayOfMonth}"><span class="holiday" title ="${foundHoliday}">${dayOfMonth}</span></li>`;
             }
         }
     }
 
     $('#holidays').html(`
-    <div class="month"> 
-        <ul>
-            <li>${monthText[thisMonth-1]} 
-                <span>${thisYear}</span>
-            </li>
-        </ul>
-    </div>
+        <div class="month"> 
+            <ul>
+                <li>${monthText[thisMonth-1]} 
+                    <span>${thisYear}</span>
+                </li>
+            </ul>
+        </div>
         <ul class="weekdays">
         <ul>
         ${weekDayHTML}
         <ul class="days">
         ${dayHTML}
-    <p class="allholidays">${allHoliday}</p>
+        <p class="allholidays">${allHoliday}</p>
     `)
 }
 
-// get results from Quote Garden API
+// get random quotes from Quote Garden API
 function getQuote(){
     let loc = '#dailyQuote';
     fetch(quoteURL)
@@ -162,6 +172,9 @@ function getQuote(){
             response.json()
         )
         .then(responseJson => displayQuote(responseJson))
+        .catch(function(error){
+            $('#quote').append(`Unable to retrieve quote due to server error code: ${error.message}`);
+        })
 }
 
 // get weather info from OpenWeather API
@@ -169,24 +182,30 @@ function getWeather(zip, country){
     let url = generateWeatherParam(zip, country);
     fetch (url)
         .then(response => response.json())
-        .then(responseJson => displayWeather(responseJson))
+        .then(responseJson => {
+                if(responseJson.cod ===200){
+                    displayWeather(responseJson);
+                }
+                else{
+                    alert('Unable to retrieve weather information due to '+responseJson.message);
+                }
+            })
 }
 
-function searchHolidayByYear(holidays){
+// Retrieve each holiday date, name and type and display on the screen
+function searchHoliday(holidays){
     let monthlyHolidayHTML = '';
     for (let i = 0; i< holidays.length; i++){
-        let holidayDate= holidays[i]['date']['iso'];
-        let holidayName = holidays[i]['name'];
-        let holidayType = holidays[i]['type'];
         if (String(holidays[i]['date']['datetime'].year) === $('#yearEnter').val() &&
         String(holidays[i]['date']['datetime'].month) === $('#holidayMonth').val()){
-        monthlyHolidayHTML = monthlyHolidayHTML + `<p>${holidayDate} - ${holidayName} (${holidayType})</p>`;
+        monthlyHolidayHTML = monthlyHolidayHTML + `<p>${holidays[i]['date']['iso']} - ${holidays[i]['name']} (${holidays[i]['type']})</p>`; 
         }
     }   
     displayHolidays('#monthlyHoliday', monthlyHolidayHTML);   
 }
 
 // Check today's date and type of holiday from the response json file. If the date and type match, display the name of holiday, else display non holiday message 
+// For the calender only National holiday or Observance are displayed
 function setHoliday(holidays){
     let holidaysFound = [];
     for (let i = 0; i< holidays.length; i++){
@@ -199,6 +218,7 @@ function setHoliday(holidays){
     return holidaysFound;
 }
 
+//Check if a date matched in a holiday list.
 function isHoliday(holidays, day){  
     for(let i=0;i<holidays.length; i++){
         if(holidays[i].date === day){
@@ -303,7 +323,7 @@ function displayWeather(weather){
     $('#weatherInfo').removeClass("hidden");
     $('#weatherInfo').dialog();
     $('#weatherInfo').append(`
-    <h2>Today's Weather ${weather['name']}:</h2>
+    <h2>Today's Weather ${weather['name']}, ${weather['sys'].country}:</h2>
     <p>Temp: ${getCelsius(temp)}°C/ ${getFahrenheit(temp)}°F Humidity:${weather['main'].humidity} </p>
     <p>Weather: ${weather['weather'][0].main} ${weather['weather'][0].description}</p>
     <span><img src="https://openweathermap.org/img/wn/${weather['weather'][0].icon}@2x.png"><span>
@@ -317,11 +337,13 @@ function toggleMenu(htmlID, htmlClass){
     })
 }
 
+//If Holiday Search link is clicked on either burger menu or navigation menu, scroll down Holiday Search section
 $('.monthlyHolidaySearch-link').on('click',function(){
     let link = document.getElementById('monthlyHolidaySearch');
     link.scrollIntoView();
 });
 
+//If Get Daily Astronomy link is clicked on either burger menu or navigation menu, scroll down Holiday Search section
 $('.dailyAstronomy-link').on('click',function(){
     getAPOD(thisYear+'-'+thisMonth+'-'+thisDate);
     let link = document.getElementById('dailyAstronomy');
