@@ -6,6 +6,10 @@
   align-content: center;
   text-align: center;
   margin: 0 auto;
+  padding-bottom: 5px;
+  padding-top: 10px;
+  margin-top: 10px;
+  margin-bottom: 5px;
   background-color: whitesmoke;
   border: rgb(238, 84, 107) 5px solid;
   border-radius: 35px;
@@ -17,6 +21,13 @@
   animation-iteration-count:2;
   animation-fill-mode: none;
   animation-play-state: running;
+}
+
+#dateInfo h2{
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 @keyframes stretch {
