@@ -262,6 +262,7 @@ function checkTime(){
 
 // All HTML Display functions
 function displayGreetings(){
+    $('#greetings').empty();
     let greeting = checkTime();
     let icon = '';
     if(greeting === 'Good morning!'){
@@ -283,6 +284,7 @@ function displayGreetings(){
 }
 
 function setToday(){
+    $('#dateInfo').empty();
     today = `${monthText[todayDate.getMonth()]} ${thisDate}, ${thisYear}`;
     $('#dateInfo').append(`
     <h2>It's ${weekDayText[thisWeekDay]}.</h2>
