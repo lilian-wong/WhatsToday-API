@@ -26,6 +26,7 @@ footer{
 }
 
 #nav-menu li{
+    cursor: pointer;
     padding: 10px;
     display: inline;
     color: cornsilk;
@@ -52,12 +53,14 @@ header h1{
 }
 
 #menu-item li{
+    cursor: pointer;
     display: block;
     margin-top: 0px;   
     text-align: left;
 }
 
 #burger-menu{
+    cursor: pointer;
     position: absolute;
     top:0px;
     right: 0px;
