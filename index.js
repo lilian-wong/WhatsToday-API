@@ -372,6 +372,16 @@ $(function(){
     $( document ).tooltip();
 });
 
+/*loader*/
+function loadPage(){
+    setTimeout(showPage, 3000);
+}
+
+function showPage(){
+    document.getElementById('loader').style.display='none';
+    document.getElementById('loadingMsg').style.display='none';
+}
+
 // load all functions
 function loadForms(){
     toggleMenu('#burger-menu','#left-side');
@@ -381,7 +391,7 @@ function loadForms(){
     setToday();
     getHolidayByYearMonth();
     getQuote();
-    getCalender();
+    //getCalender();
     setScroll();
     scrollTop(); 
 }
