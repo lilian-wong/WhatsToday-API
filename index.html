@@ -16,7 +16,8 @@ search holiday by month and year. Users can view the astronomy picture of the da
         <link rel="stylesheet" href="index.css">
         <link rel="stylesheet" href="animations.css">
     </head>
-<body>
+<body onload="loadPage()">
+    
     <div class="navBar">
         <img src="./images/AppLogo.png" class="applogo" alt="app logo">
         <header><h1>What is today?</h1></header>
@@ -38,12 +39,13 @@ search holiday by month and year. Users can view the astronomy picture of the da
             </ol> 
     </div>
     <main>
-        <div class = "main">
-            <section id="greetings"><h2>Greetings</h2></section>
-            <section id="dateInfo"><h2>Today</h2></section>
-            <section id="quote" class="quoteText"><h2>Daily Quote</h2></section>
-            <section id="weatherInfo" class="hidden"><h2>Today Weather</h2></section>
-            <section id="holidays"><h2>Calender power by calendarific</h2></section>
+        <div class = "main" >
+            <section id="greetings"></section>
+            <section id="dateInfo"></section>
+            <section id="quote" class="quoteText"></section>
+            <section id="weatherInfo" class="hidden"></section>
+            <section id="holidays"><div id="loader"></div><p id="loadingMsg">Loading.</p>
+            <h2>Calender power by calendarific</h2></section>
             <section class = "searchHoliday">
                 <h2>Find list of holidays:</h2>
                     <div id="monthlyHolidaySearch">
