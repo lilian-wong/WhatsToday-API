@@ -258,6 +258,7 @@ function checkTime(){
 
 // All HTML Display functions
 function displayGreetings(){
+    $('#greetings').empty();
     let greeting = checkTime();
     let icon = '';
 
@@ -277,7 +278,7 @@ function displayGreetings(){
 
     $('#greetings').append(`
     <div><img src="./images/${icon}" alt="greeting icon" style="width:50px"></div>
-    <div>${checkTime()}</div>
+    <h2>${checkTime()}</h2>
     `);
 }
 
@@ -296,7 +297,7 @@ function displayQuote(responseJson){
         author = 'unknown';
     }
     $('#quote').append(`
-    <p>"${responseJson.quoteText}"</p>
+    <h2>"${responseJson.quoteText}"</h2>
     <p>-${author}</p>`
     )
 }
