@@ -31,6 +31,9 @@ footer{
     display: inline;
     color: cornsilk;
 }
+#nav-menu li:hover{
+    color:rgb(130, 240, 170);
+}
 
 header h1{
     font-family: 'Slackey', cursive;
@@ -85,6 +88,7 @@ header h1{
 
 #menu-item li:hover{
     font-weight: bold;  
+    color: darkslateblue;
 }
 
 #menu-item li{
@@ -161,7 +165,7 @@ section{
 }
 
 .quoteText{
-    font-size: 16px;
+    font-size: 15px;
     text-align: left;
     font-style: italic;
     color: rgb(95, 84, 84);
@@ -211,5 +215,8 @@ section{
     section{
         margin-left: 50px;
         margin-right: 50px;
+    }
+    .quoteText{
+        font-size: 16px;
     }
 }

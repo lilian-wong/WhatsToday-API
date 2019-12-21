@@ -6,7 +6,7 @@ const calendarificURL = 'https://calendarific.com/api/v2/holidays'; //Calendarif
 const ip_loc = 'https://ipapi.co/json/'; //ip address
 const weatherURL = 'https://api.openweathermap.org/data/2.5/weather'; //weather info
 const calendarific_api_key = '2a760f5fd99f43f85a5c229a5c6da3d0b55acb1e';
-const openWeather_api_key = 'cac41a545f1a6a3eadf04d709f83ea14';
+const openWeather_api_key = 'cac41a545f1a6a3eadf04d709f83ea14'; 
 
 let countryCode ='US'; //string- required field : Default set as 'US'
 let today ='';
@@ -33,7 +33,7 @@ $('.weatherInfo-link').click(function(){
             }
         )
        .then (responseJson => {
-           getWeather(responseJson.postal, countryCode);
+           getWeather(responseJson.latitude, responseJson.longitude);
         })
        .catch(function(error){
             alert(`Something went wrong ${error.message}`);
@@ -42,8 +42,8 @@ $('.weatherInfo-link').click(function(){
 }
 
 // Generate parameter for weather API
-function generateWeatherParam(zip, countryCode){
-    return weatherURL+'?zip='+zip+','+countryCode+'&APPID='+openWeather_api_key;
+function generateWeatherParam(lat, lon){
+    return weatherURL+'?lat='+lat+'&'+'lon='+lon+'&APPID='+openWeather_api_key;
 }
 
 // Generate parameter for calendarific API
@@ -83,23 +83,19 @@ $('#holidaySearchForm').submit(function(event){
             }
         })
         .then(responseJson => {
-            searchHoliday(responseJson.response.holidays)
+            searchHoliday(responseJson.response.holidays);
         })
     })
 }
 
 //Generate HTML code for Calender
 function setCalender(holidays){
-    //Get holiday information from calendarific API
-    let monthlyHoliday = setHoliday(holidays);
-    //Get the last day of current month
-    let lastDay = new Date(thisYear, thisMonth, 0);
-    //Get the last date of the current month
-    let lastDate = lastDay.getDate();
-    //set the first weekday of current month and year
-    let firstWeekDay = new Date(thisYear, thisMonth, -1);
-    //set the first week day of current month and year
-    firstWeekDay = firstWeekDay.getDay();
+    let monthlyHoliday = setHoliday(holidays);//Get holiday information from calendarific API
+    let lastDay = new Date(thisYear, thisMonth, 0);//Get the last day of current month
+    let lastDate = lastDay.getDate();//Get the last date of the current month
+    let firstWeekDay = new Date(thisYear, thisMonth, -1);//set the first weekday of current month and year
+
+    firstWeekDay = firstWeekDay.getDay();//set the first week day of current month and year
     let weekDayHTML ='';
     let dayHTML ='';
     let allHoliday = ''; //In case of holiday did not pull, calender will still be created.
@@ -181,15 +177,15 @@ function getQuote(){
 function getWeather(zip, country){
     let url = generateWeatherParam(zip, country);
     fetch (url)
-        .then(response => response.json())
-        .then(responseJson => {
-                if(responseJson.cod ===200){
-                    displayWeather(responseJson);
-                }
-                else{
-                    alert('Unable to retrieve weather information due to '+responseJson.message);
-                }
-            })
+        .then(response =>
+                response.json()
+        )
+        .then(responseJson => 
+                displayWeather(responseJson)            
+        )
+        .catch(function (error){
+            alert('Unable to retrieve weather information due to '+error.message);
+        })
 }
 
 // Retrieve each holiday date, name and type and display on the screen
@@ -264,18 +260,21 @@ function checkTime(){
 function displayGreetings(){
     let greeting = checkTime();
     let icon = '';
-    if(greeting === 'Good morning!'){
+
+    switch(greeting){
+        case 'Good morning!':
         icon = 'sunny.png';
-    }
-    else if(greeting === 'Good evening!'){
+        break;
+        case 'Good evening!':
         icon = 'evening.png';
-    }
-    else if(greeting === 'Good Night!'){
+        break;
+        case 'Good Night!':
         icon = 'night.png';
+        break;
+        default:
+        icon = 'smiley.png'; 
     }
-    else{
-        icon = 'smiley.png';
-    }
+
     $('#greetings').append(`
     <div><img src="./images/${icon}" alt="greeting icon" style="width:50px"></div>
     <div>${checkTime()}</div>
@@ -283,6 +282,7 @@ function displayGreetings(){
 }
 
 function setToday(){
+    displayGreetings();
     today = `${monthText[todayDate.getMonth()]} ${thisDate}, ${thisYear}`;
     $('#dateInfo').append(`
     <h2>It's ${weekDayText[thisWeekDay]}.</h2>
@@ -386,12 +386,11 @@ function showPage(){
 function loadForms(){
     toggleMenu('#burger-menu','#left-side');
     toggleMenu('#closeBurger','#left-side');
-    displayGreetings();
     getWeatherInfo();
     setToday();
     getHolidayByYearMonth();
     getQuote();
-    //getCalender();
+    getCalender();
     setScroll();
     scrollTop(); 
 }
