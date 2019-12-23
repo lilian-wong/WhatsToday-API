@@ -21,6 +21,28 @@ const monthText = ['January', 'February', 'March', 'April', 'May', 'June', 'July
 const weekDayShortText = ['Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat']; 
 const weekDayText =['Sunday','Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday'];
 
+function setToday(){
+    displayGreetings();
+    today = `${monthText[todayDate.getMonth()]} ${thisDate}, ${thisYear}`;
+    $('#dateInfo').empty();
+    $('#dateInfo').append(`
+    <h2>It's ${weekDayText[thisWeekDay]}.</h2>
+    <p>${today}</p>`);   
+}
+
+// get random quotes from Quote Garden API
+function getQuote(){
+    let loc = '#dailyQuote';
+    fetch(quoteURL)
+        .then(response => 
+            response.json()
+        )
+        .then(responseJson => displayQuote(responseJson))
+        .catch(function(error){
+            $('#quote').append(`Unable to retrieve quote due to server error code: ${error.message}`);
+        })
+}
+
 // When click the weather link, fetch zip code from https://ipapi.co/json/. Then pass the zip code to get weather information from openweathermap
 function getWeatherInfo(){
 $('.weatherInfo-link').click(function(){
@@ -36,14 +58,51 @@ $('.weatherInfo-link').click(function(){
            getWeather(responseJson.latitude, responseJson.longitude);
         })
        .catch(function(error){
-            alert(`Something went wrong ${error.message}`);
+            console.log(`Something went wrong ${error.message}`);
        })
 });
+}
+
+// get weather info from OpenWeather API
+function getWeather(zip, country){
+    let url = generateWeatherParam(zip, country);
+    fetch (url)
+        .then(response =>response.json()
+        )
+        .then(responseJson => 
+                displayWeather(responseJson)            
+        )
+        .catch(function (error){
+            console.log('Unable to retrieve weather information due to '+error.message);
+        })
 }
 
 // Generate parameter for weather API
 function generateWeatherParam(lat, lon){
     return weatherURL+'?lat='+lat+'&'+'lon='+lon+'&APPID='+openWeather_api_key;
+}
+//convert Kevin to Fahrenheit
+function getFahrenheit(kevin){
+    let f = (kevin-273.15)*9/5+32;
+    return f.toFixed(2);
+}
+
+//convert Kevin to Celsius
+function getCelsius(kevin){
+    return (kevin-273.15).toFixed(2);
+}
+
+function displayWeather(weather){ 
+    let temp = weather['main'].temp;
+    $('#weatherInfo').empty();
+    $('#weatherInfo').removeClass("hidden");
+    $('#weatherInfo').dialog();
+    $('#weatherInfo').append(`
+    <h2>Today's Weather ${weather['name']}, ${weather['sys'].country}:</h2>
+    <p>Temp: ${getCelsius(temp)}°C/ ${getFahrenheit(temp)}°F Humidity:${weather['main'].humidity} </p>
+    <p>Weather: ${weather['weather'][0].main} ${weather['weather'][0].description}</p>
+    <span><img src="https://openweathermap.org/img/wn/${weather['weather'][0].icon}@2x.png"><span>
+    `)
 }
 
 // Generate parameter for calendarific API
@@ -69,23 +128,6 @@ function getCalender(){
             $('.searchHoliday').append(`Unable to retrieve holidays due to server error code: ${error.message}`);
             setCalender(''); 
         })
-}
-
-// When user click search button,  pass api_key, countryCode, the year and month
-function getHolidayByYearMonth(){
-$('#holidaySearchForm').submit(function(event){
-    event.preventDefault(); 
-    let url = generateCalenderParam(calendarific_api_key,countryCode,$('#yearEnter').val(), $('#holidayMonth').val());
-    fetch(url)
-        .then(response =>{
-            if(response.ok){
-                return response.json();
-            }
-        })
-        .then(responseJson => {
-            searchHoliday(responseJson.response.holidays);
-        })
-    })
 }
 
 //Generate HTML code for Calender
@@ -160,44 +202,21 @@ function setCalender(holidays){
     `)
 }
 
-// get random quotes from Quote Garden API
-function getQuote(){
-    let loc = '#dailyQuote';
-    fetch(quoteURL)
-        .then(response => 
-            response.json()
-        )
-        .then(responseJson => displayQuote(responseJson))
-        .catch(function(error){
-            $('#quote').append(`Unable to retrieve quote due to server error code: ${error.message}`);
+// When user click search button,  pass api_key, countryCode, the year and month
+function getHolidayByYearMonth(){
+    $('#holidaySearchForm').submit(function(event){
+        event.preventDefault(); 
+        let url = generateCalenderParam(calendarific_api_key,countryCode,$('#yearEnter').val(), $('#holidayMonth').val());
+        fetch(url)
+            .then(response =>{
+                if(response.ok){
+                    return response.json();
+                }
+            })
+            .then(responseJson => {
+                searchHoliday(responseJson.response.holidays);
         })
-}
-
-// get weather info from OpenWeather API
-function getWeather(zip, country){
-    let url = generateWeatherParam(zip, country);
-    fetch (url)
-        .then(response =>
-                response.json()
-        )
-        .then(responseJson => 
-                displayWeather(responseJson)            
-        )
-        .catch(function (error){
-            alert('Unable to retrieve weather information due to '+error.message);
-        })
-}
-
-// Retrieve each holiday date, name and type and display on the screen
-function searchHoliday(holidays){
-    let monthlyHolidayHTML = '';
-    for (let i = 0; i< holidays.length; i++){
-        if (String(holidays[i]['date']['datetime'].year) === $('#yearEnter').val() &&
-        String(holidays[i]['date']['datetime'].month) === $('#holidayMonth').val()){
-        monthlyHolidayHTML = monthlyHolidayHTML + `<p>${holidays[i]['date']['iso']} - ${holidays[i]['name']} (${holidays[i]['type']})</p>`; 
-        }
-    }   
-    displayHolidays('#monthlyHoliday', monthlyHolidayHTML);   
+    })
 }
 
 // Check today's date and type of holiday from the response json file. If the date and type match, display the name of holiday, else display non holiday message 
@@ -212,6 +231,23 @@ function setHoliday(holidays){
         }
     }   
     return holidaysFound;
+}
+
+function displayHolidays(loc, holiday){
+    $(loc).empty();
+    $(loc).append(holiday);
+}
+
+// Retrieve each holiday date, name and type and display on the screen
+function searchHoliday(holidays){
+    let monthlyHolidayHTML = '';
+    for (let i = 0; i< holidays.length; i++){
+        if (String(holidays[i]['date']['datetime'].year) === $('#yearEnter').val() &&
+        String(holidays[i]['date']['datetime'].month) === $('#holidayMonth').val()){
+        monthlyHolidayHTML = monthlyHolidayHTML + `<p>${holidays[i]['date']['iso']} - ${holidays[i]['name']} (${holidays[i]['type']})</p>`; 
+        }
+    }   
+    displayHolidays('#monthlyHoliday', monthlyHolidayHTML);   
 }
 
 //Check if a date matched in a holiday list.
@@ -282,14 +318,6 @@ function displayGreetings(){
     `);
 }
 
-function setToday(){
-    displayGreetings();
-    today = `${monthText[todayDate.getMonth()]} ${thisDate}, ${thisYear}`;
-    $('#dateInfo').append(`
-    <h2>It's ${weekDayText[thisWeekDay]}.</h2>
-    <p>${today}</p>`);   
-}
-
 function displayQuote(responseJson){
     $('#quote').empty();
     let author = responseJson.quoteAuthor;
@@ -302,34 +330,8 @@ function displayQuote(responseJson){
     )
 }
 
-function displayHolidays(loc, holiday){
-    $(loc).empty();
-    $(loc).append(holiday);
-}
 
-//convert Kevin to Fahrenheit
-function getFahrenheit(kevin){
-    let f = (kevin-273.15)*9/5+32;
-    return f.toFixed(2);
-}
 
-//convert Kevin to Celsius
-function getCelsius(kevin){
-    return (kevin-273.15).toFixed(2);
-}
-
-function displayWeather(weather){ 
-    let temp = weather['main'].temp;
-    $('#weatherInfo').empty();
-    $('#weatherInfo').removeClass("hidden");
-    $('#weatherInfo').dialog();
-    $('#weatherInfo').append(`
-    <h2>Today's Weather ${weather['name']}, ${weather['sys'].country}:</h2>
-    <p>Temp: ${getCelsius(temp)}°C/ ${getFahrenheit(temp)}°F Humidity:${weather['main'].humidity} </p>
-    <p>Weather: ${weather['weather'][0].main} ${weather['weather'][0].description}</p>
-    <span><img src="https://openweathermap.org/img/wn/${weather['weather'][0].icon}@2x.png"><span>
-    `)
-}
 
 //Toggle burger menu button
 function toggleMenu(htmlID, htmlClass){
@@ -338,18 +340,30 @@ function toggleMenu(htmlID, htmlClass){
     })
 }
 
-//If Holiday Search link is clicked on either burger menu or navigation menu, scroll down Holiday Search section
-$('.monthlyHolidaySearch-link').on('click',function(){
-    let link = document.getElementById('monthlyHolidaySearch');
-    link.scrollIntoView();
-});
+/*loader*/
+function loadPage(){
+    setTimeout(showPage, 3000);
+    $(function(){
+        $( document ).tooltip();
+    });
+    //If Get Daily Astronomy link is clicked on either burger menu or navigation menu, scroll down Holiday Search section
+    $('.dailyAstronomy-link').on('click',function(){
+        getAPOD(thisYear+'-'+thisMonth+'-'+thisDate);
+        let link = document.getElementById('dailyAstronomy');
+        link.scrollIntoView();
+    });
+    //If Holiday Search link is clicked on either burger menu or navigation menu, scroll down Holiday Search section
+    $('.monthlyHolidaySearch-link').on('click',function(){
+        let link = document.getElementById('monthlyHolidaySearch');
+        link.scrollIntoView();
+    });
+}
 
-//If Get Daily Astronomy link is clicked on either burger menu or navigation menu, scroll down Holiday Search section
-$('.dailyAstronomy-link').on('click',function(){
-    getAPOD(thisYear+'-'+thisMonth+'-'+thisDate);
-    let link = document.getElementById('dailyAstronomy');
-    link.scrollIntoView();
-});
+function showPage(){
+    document.getElementById('loader').style.display='none';
+    document.getElementById('loadingMsg').style.display='none';
+
+}
 
 function setScroll(){
     $(window).scroll(function(event){
@@ -369,20 +383,6 @@ function scrollTop(){
     });
 }
 
-$(function(){
-    $( document ).tooltip();
-});
-
-/*loader*/
-function loadPage(){
-    setTimeout(showPage, 3000);
-}
-
-function showPage(){
-    document.getElementById('loader').style.display='none';
-    document.getElementById('loadingMsg').style.display='none';
-}
-
 // load all functions
 function loadForms(){
     toggleMenu('#burger-menu','#left-side');
@@ -391,7 +391,7 @@ function loadForms(){
     setToday();
     getHolidayByYearMonth();
     getQuote();
-    getCalender();
+    //getCalender();
     setScroll();
     scrollTop(); 
 }
