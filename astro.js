@@ -11,15 +11,22 @@ function generateAPODParam(date){
 function displayImage(APOD){
     $('#astro-title').removeClass("hidden");
     $('.astro-container').empty();
-    console.log(APOD);
+    
     if(APOD!=''){
         if(APOD.media_type==='image'){
             $('.astro-container').append(`
                 <img src="${APOD.url}" width="100%" height="500px" alt="${APOD.title}">
                 <div class="text-block">
-                    <p>Title: ${APOD.title}</p>
+                    <h3>Title: ${APOD.title}</h3>
+                    <p>Date: ${APOD.date}</p>
+                    <p>Copyright: ${APOD.copyright}</p>
                 </div>
             `)
+        }
+        else{
+            $('.astro-container').append(`
+                <h3>No image available</h3>
+        `)
         }
     }
     else{

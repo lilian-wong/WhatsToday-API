@@ -1,3 +1,4 @@
+// Retrieve today's name days
 'use strict';
 
 const nameDayEndpoint = 'https://api.abalin.net/namedays?';
