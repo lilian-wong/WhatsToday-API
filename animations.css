@@ -1,7 +1,6 @@
 /* Additional styling for WhatsToday app */
 
 #dateInfo{
-  width: 16em;
   font-size:1em;
   align-content: center;
   text-align: center;
@@ -28,6 +27,12 @@
   padding-bottom: 0px;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.todayFact{
+  font-size: 16px;
+  font-style: italic;
+  color:darkgreen;
 }
 
 @keyframes stretch {

@@ -9,9 +9,9 @@ const calendarific_api_key = '2a760f5fd99f43f85a5c229a5c6da3d0b55acb1e';
 const openWeather_api_key = 'cac41a545f1a6a3eadf04d709f83ea14'; 
 
 let countryCode ='US'; //string- required field : Default set as 'US'
-let today ='';
 
 // Set Date Information
+let today ='';
 const todayDate = new Date();
 const thisYear = todayDate.getFullYear(); //integer- required field
 const thisMonth = todayDate.getMonth()+1; //The getMonth() method returns the month (from 0 to 11) for the specified date, according to local time
@@ -21,13 +21,18 @@ const monthText = ['January', 'February', 'March', 'April', 'May', 'June', 'July
 const weekDayShortText = ['Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat']; 
 const weekDayText =['Sunday','Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday'];
 
+
+function getFormattedToday(){
+    return todayDate.getFullYear()+'-'+(todayDate.getMonth()+1)+'-'+todayDate.getDate();
+}
+
 function setToday(){
     displayGreetings();
     today = `${monthText[todayDate.getMonth()]} ${thisDate}, ${thisYear}`;
     $('#dateInfo').empty();
     $('#dateInfo').append(`
-    <h2>It's ${weekDayText[thisWeekDay]}.</h2>
-    <p>${today}</p>`);   
+    <h2>It's ${weekDayText[thisWeekDay]}, ${today}</h2>
+    `);   
 }
 
 // get random quotes from Quote Garden API
@@ -41,6 +46,18 @@ function getQuote(){
         .catch(function(error){
             $('#quote').append(`Unable to retrieve quote due to server error code: ${error.message}`);
         })
+}
+
+function displayQuote(responseJson){
+    $('#quote').empty();
+    let author = responseJson.quoteAuthor;
+    if(author===''){
+        author = 'unknown';
+    }
+    $('#quote').append(`
+    <h2>"${responseJson.quoteText}"</h2>
+    <p>-${author}</p>`
+    )
 }
 
 // When click the weather link, fetch zip code from https://ipapi.co/json/. Then pass the zip code to get weather information from openweathermap
@@ -164,10 +181,13 @@ function setCalender(holidays){
         if(dayOfMonth<10){
             tDate = '0'+tDate;
         }
-        let searchDate = thisYear+'-'+thisMonth+'-'+tDate; //Set date format YYYY-MM-DD
+        // let searchDate = thisYear+'-'+thisMonth+'-'+tDate; //Set date format YYYY-MM-DD
+        let searchDate = getFormattedToday();
         let foundHoliday = isHoliday(monthlyHoliday,  searchDate);
         
+        //If today is a holiday
         if(thisDate===dayOfMonth){
+            $('#dateInfo').append(`<p>${foundHoliday}</p>`);
             if(foundHoliday===''){
                 dayHTML = dayHTML + `<li value="${dayOfMonth}"><span class="today" title="Today">${dayOfMonth}</span></li>`;
             }
@@ -317,21 +337,6 @@ function displayGreetings(){
     <h2>${checkTime()}</h2>
     `);
 }
-
-function displayQuote(responseJson){
-    $('#quote').empty();
-    let author = responseJson.quoteAuthor;
-    if(author===''){
-        author = 'unknown';
-    }
-    $('#quote').append(`
-    <h2>"${responseJson.quoteText}"</h2>
-    <p>-${author}</p>`
-    )
-}
-
-
-
 
 //Toggle burger menu button
 function toggleMenu(htmlID, htmlClass){

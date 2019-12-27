@@ -17,7 +17,6 @@ search holiday by month and year. Users can view the astronomy picture of the da
         <link rel="stylesheet" href="animations.css">
     </head>
 <body onload="loadPage()">
-    
     <div class="navBar">
         <img src="./images/AppLogo.png" class="applogo" alt="app logo">
         <header><h1>What is today?</h1></header>
@@ -42,7 +41,6 @@ search holiday by month and year. Users can view the astronomy picture of the da
         <div class = "main" >
             <section id="greetings"><h2>Hello</h2></section>
             <section id="dateInfo"><h2>Today</h2></section>
-            <section id="quote" class="quoteText"><h2>Quote</h2></section>
             <section id="weatherInfo" class="hidden"><h2>Today's Weather</h2></section>
             <section id="holidays"><h2>Calender power by calendarific</h2></section><div id="loader"></div><p id="loadingMsg">Loading.</p>
             <section class = "searchHoliday">
@@ -72,6 +70,7 @@ search holiday by month and year. Users can view the astronomy picture of the da
                     <div id="monthlyHoliday"></div>
                 </div>
             </section>
+            <section id="quote" class="quoteText"><h2>Quote</h2></section>
             <section id="dailyAstronomy">
                 <h2 id="astro-title" class="hidden">Astronomy Picture of the Day</h2>
                 <div class="astro-container">
@@ -84,6 +83,7 @@ search holiday by month and year. Users can view the astronomy picture of the da
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"></script>
     <script src="index.js"></script>
     <script src="astro.js"></script>
+    <script src="dateFact.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <footer>2019</footer>
 </body>
