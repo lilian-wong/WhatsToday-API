@@ -162,8 +162,8 @@ input, select, button{
 section{
     font-size: smaller;
     text-align: left;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 0px;
+    padding-right: 0px;
     padding-top: 10px;
     padding-bottom: 20px;
     margin-top: 20px;

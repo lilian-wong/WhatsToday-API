@@ -21,11 +21,6 @@ const monthText = ['January', 'February', 'March', 'April', 'May', 'June', 'July
 const weekDayShortText = ['Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat']; 
 const weekDayText =['Sunday','Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday'];
 
-
-function getFormattedToday(){
-    return todayDate.getFullYear()+'-'+(todayDate.getMonth()+1)+'-'+todayDate.getDate();
-}
-
 function setToday(){
     displayGreetings();
     today = `${monthText[todayDate.getMonth()]} ${thisDate}, ${thisYear}`;
@@ -181,8 +176,7 @@ function setCalender(holidays){
         if(dayOfMonth<10){
             tDate = '0'+tDate;
         }
-        // let searchDate = thisYear+'-'+thisMonth+'-'+tDate; //Set date format YYYY-MM-DD
-        let searchDate = getFormattedToday();
+        let searchDate = thisYear+'-'+thisMonth+'-'+tDate; //Set date format YYYY-MM-DD
         let foundHoliday = isHoliday(monthlyHoliday,  searchDate);
         
         //If today is a holiday
