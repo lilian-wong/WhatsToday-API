@@ -1,30 +1,31 @@
 'use strict';
 
-const dateFactEndpoint = 'http://numbersapi.com';
+const nameDayEndpoint = 'https://api.abalin.net/namedays?';
 
-function generateDateFactParam(){
-    return dateFactEndpoint+'/'+thisMonth+'/'+thisDate+'/'+'date';
+function generateNameDayParam(){
+    return nameDayEndpoint+'country='+countryCode+'&month='+thisMonth+'&day='+thisDate;
 }
 
-function getDateFact(){
-    let url = generateDateFactParam();
+function getNameDay(){
+    let url = generateNameDayParam();
 
     fetch(url)
     .then(response => {
         if(response.ok){
-            return response.text();
+            return response.json();
         }
         else{
-            console.log('Unable to load date fact. Error code: '+response.status+ ' '+ response.statusText)
+            console.log('Unable to load name day. Error code: '+response.status+ ' '+ response.statusText)
         }
     })
-    .then(responseJson => displayDateFact(responseJson))
+    .then(responseJson => displayNameDay(responseJson.data[0]['namedays']))
 }
 
-function displayDateFact(dateFact){
+function displayNameDay(data){
+    let strData = Object.values(data);
     $('#dateInfo').append(`
-    <h3>About this day:</h3>
-    <p class="todayFact">${dateFact}</p>`);
+    <h3>Today's name day (${countryCode}):</h3>
+    <p class="nameDay">${strData}</p>`);
 }
 
-$(getDateFact);
+$(getNameDay);

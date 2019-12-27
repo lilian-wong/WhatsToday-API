@@ -55,8 +55,8 @@ function displayQuote(responseJson){
         author = 'unknown';
     }
     $('#quote').append(`
-    <h2>"${responseJson.quoteText}"</h2>
-    <p>-${author}</p>`
+    <h2 class="quoteText">"${responseJson.quoteText}"</h2>
+    <p class="quoteText">-${author}</p>`
     )
 }
 
@@ -396,7 +396,7 @@ function loadForms(){
     setToday();
     getHolidayByYearMonth();
     getQuote();
-    //getCalender();
+    getCalender();
     setScroll();
     scrollTop(); 
 }
